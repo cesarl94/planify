@@ -1,0 +1,27 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+nav {
+    padding: 1rem;
+    background-color: #475B63;
+}
+
+main {
+    padding: 1rem;
+    background-color: rgb(216, 227, 241);
+    flex: 1; 
+}
+
+footer {
+    padding: 1rem;
+    background-color: rgb(218, 238, 189);
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}

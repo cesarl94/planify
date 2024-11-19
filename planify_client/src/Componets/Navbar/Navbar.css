@@ -1,0 +1,27 @@
+.Navbar-Container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .Logo_Navbar {
+    max-width: 40%;
+    height: auto;
+    width: 172px; 
+  }
+
+  .IconUser_Navbar{
+    max-width: 100%;
+    height: auto;
+    width: 41px; 
+  }
+
+  .User_Navbar{
+    display: flex;
+    align-items: center;
+  }
+
+  .User_Navbar p{
+    font-size: 22px;
+    margin: 10px;
+    color: white;
+  }
