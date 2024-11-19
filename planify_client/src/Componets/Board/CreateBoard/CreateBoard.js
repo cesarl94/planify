@@ -2,6 +2,7 @@ import React from 'react'
 import addstate from '../../../Images/icons/add-state.png'
 import './CreateBoard.css'
 const CreateBoard = () => {
+    
     return (
         <div>
             <button className='CreateBoard-Container' onClick={() => alert('CREACION!!!!')}>

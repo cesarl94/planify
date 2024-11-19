@@ -4,13 +4,15 @@ import addtask from '../../../Images/icons/add-task.png';
 import edit from '../../../Images/icons/edit.png';
 import deleteicon from '../../../Images/icons/delete.png';
 import { CardStatusContext } from '../../../Context/CardStatusContext';
+import TaskCard from '../TaskCard/TaskCard';
 
 const StatusCard = () => {
-    const { titles } = useContext(CardStatusContext);
 
+    const {titles} = useContext(CardStatusContext)
     return (
         <div className="StatusCard-scroll">
             {titles.map((title, index) => (
+              
                 <div key={index} className="StatusCard-container">
                     <div className="TitleStatus-container">
                         <h3>{title}</h3>
@@ -33,3 +35,4 @@ const StatusCard = () => {
 };
 
 export default StatusCard;
+

@@ -15,6 +15,7 @@ const CardStatusProvider = ({ children }) => {
       const addTitle = (newTitle) => {
         setTitles((prevTitles) => [...prevTitles, newTitle]);
       };
+      
       return (
         <CardStatusContext.Provider value={{ titles, addTitle }}>
           {children}

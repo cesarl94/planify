@@ -12,7 +12,7 @@ nav {
 
 main {
     padding: 1rem;
-    background-color: rgb(216, 227, 241);
+    background-color: #F3E8EE;
     flex: 1; 
 }
 
@@ -20,7 +20,7 @@ footer {
     padding: 1rem;
     background-color: rgb(218, 238, 189);
 }
-.container {
+.container-body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;

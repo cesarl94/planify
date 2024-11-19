@@ -7,14 +7,14 @@ import CreateBoard from '../../Componets/Board/CreateBoard/CreateBoard';
 import StatusCard from '../../Componets/Board/StatusCard/StatusCard';
 
 const Home = () => {
+
   return (
-    <div className="container">
+    <div className="container-body">
       <nav><Navbar /></nav>
       
       <main>
         <CreateBoard />
-        {/* Contenedor que maneja el scroll horizontal */}
-        <div className="main-scroll-container">
+        <div>
           <StatusCard />
         </div>
       </main>
@@ -24,4 +24,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Home
