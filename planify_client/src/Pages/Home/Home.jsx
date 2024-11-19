@@ -3,7 +3,7 @@ import Navbar from '../../Componets/Navbar/Navbar'
 import Footer from '../../Componets/Footer/Footer'
 import'./Home.css'
 import '../../Global.css'
-import CreateBoard from '../../Componets/CreatePlanifyBoard/CreateBoard'
+import CreateBoard from '../../Componets/Board/CreateBoard/CreateBoard'
 const Home = () => {
   return (
     <div className="container">
