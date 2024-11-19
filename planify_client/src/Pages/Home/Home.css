@@ -1,0 +1,24 @@
+/* Home.css */
+
+/* Contenedor principal que incluye el scroll horizontal */
+.main-scroll-container {
+    display: flex;
+    overflow-x: auto; /* Activa el scroll horizontal */
+    white-space: nowrap; /* Evita el salto de línea entre elementos */
+    gap: 10px; /* Espacio entre componentes internos */
+    padding: 10px; /* Espaciado interno */
+    height: auto; /* Ajuste dinámico según el contenido */
+}
+
+.main-scroll-container::-webkit-scrollbar {
+    height: 8px; /* Altura del scrollbar horizontal */
+}
+
+.main-scroll-container::-webkit-scrollbar-thumb {
+    background-color: #729B79; /* Color del scroll */
+    border-radius: 10px; /* Borde redondeado */
+}
+
+.main-scroll-container::-webkit-scrollbar-track {
+    background: #BACDB0; /* Fondo del track */
+}
