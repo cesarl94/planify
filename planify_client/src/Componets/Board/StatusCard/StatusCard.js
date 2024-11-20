@@ -28,6 +28,16 @@ const StatusCard = () => {
                             </button>
                         </div>
                     </div>
+                    
+                    <TaskCard 
+                        description="Completar el informe de ventas" 
+                        priority={3} 
+                        users={[
+                            { name: 'Juan', avatarUrl: 'url_del_avatar_juan' },
+                            { name: 'Ana', avatarUrl: 'url_del_avatar_ana' },
+                            { name: 'Luis', avatarUrl: 'url_del_avatar_luis' },
+                        ]}
+                    />
                 </div>
             ))}
         </div>
