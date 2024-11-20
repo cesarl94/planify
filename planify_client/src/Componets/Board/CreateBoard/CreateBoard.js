@@ -7,7 +7,6 @@ const CreateBoard = () => {
         <div>
             <button className='CreateBoard-Container' onClick={() => alert('CREACION!!!!')}>
                 <img src={addstate} className='addstateicon'></img>
-
                 <p className='CreateBoard-Title'>Planify board</p>
             </button>
         </div>

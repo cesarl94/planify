@@ -8,6 +8,7 @@ const Navbar = () => {
   const {user} = useContext(UserContext)
   return (
     <div className='Navbar-Container'>
+      
       <img src={Logo} className='Logo_Navbar'></img>
       
       <div className='User_Navbar'>
