@@ -1,5 +1,26 @@
 .login-card{
     background-color: #BACDB0;
 
+    border-radius: 20px;
+    border-style: solid ;
+    border-color: #729B79;
+    border-width: 2px;
+}
 
+.Link-Login{
+    font-size:  13px;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+}
+
+.Button-Login{
+    background-color: #729B79;
+    color: white;
+    border-style: solid ;
+    border-color: #475B63;
+    border-width: 1px;
+}
+.Button-Login:hover{
+    background-color: #58805e;
 }
