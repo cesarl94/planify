@@ -33,7 +33,7 @@ const Login = () => {
                     <h3 className='mt-3'>Welcome!!</h3>
 
                     <div className="d-flex justify-content-center">
-                        <div className="col-8">
+                        <div className="col-10 col-sm-8">
                             <div>
                                 <input type='email' placeholder='Enter your email' className='col-12 border rounded-2 my-2' onChange={(email)=>{HandleEmailChange(email.target.value)}}></input>
                                 <input type='password' placeholder='Enter your password' className='col-12 border rounded-2' onChange={(password)=>(SetPassword(password.target.value))}></input>
@@ -52,10 +52,10 @@ const Login = () => {
                         <img src={exclamation} width={'30px'} height={'30px'} className='me-2'></img>
                         <p className='text-danger m-0'>Invalid credentials. Please try again</p>
                     </div>
+                    </>  }
                     <div className='my-2'>
                         <p>Don’t you have an account? <a href='/Register' className='text-dark'>Register here</a></p>
                     </div>
-                    </>  }
                 </div>
 
             </main>
