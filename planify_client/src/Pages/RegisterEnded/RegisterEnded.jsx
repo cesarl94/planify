@@ -8,7 +8,7 @@ const Register = () => {
     <div className='container-body'>
       <nav><Navbar /></nav>
       <main className='d-flex  align-items-center justify-content-center'>
-        <div className='login-card col-6 text-center'>
+        <div className='login-card col-12 col-md-6 text-center'>
           <h3 className='mt-3'>Your account has been successfully created!</h3>
 
           <div className="d-flex justify-content-center">
