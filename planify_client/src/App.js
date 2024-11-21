@@ -6,7 +6,7 @@ import { CardStatusProvider } from "./Context/CardStatusContext";
 import Login from "./Pages/Login/Login";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Register from "./Pages/Register/Register";
-
+import RegisterEnded from "./Pages/RegisterEnded/RegisterEnded";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +20,10 @@ const router = createBrowserRouter([
   {
     path: "/Register",
     element: <Register/>
+  },
+  {
+    path: "/RegisterEnded",
+    element: <RegisterEnded/>
   }
 ]);
 
