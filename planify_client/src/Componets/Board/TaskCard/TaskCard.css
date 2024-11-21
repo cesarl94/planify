@@ -1,0 +1,49 @@
+.task-card {
+    background-color: #475B63; /* Color de fondo */
+    color: white; /* Color del texto */
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 16px; /* Espacio interno */
+    margin: 10px; /* Espacio externo */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+    transition: transform 0.2s; /* Efecto de transición */
+}
+
+.task-card:hover {
+    transform: scale(1.02); /* Aumenta ligeramente el tamaño al pasar el ratón */
+}
+
+.description {
+    font-size: 16px; /* Tamaño del texto de la descripción */
+    margin-bottom: 8px; /* Espacio debajo de la descripción */
+}
+
+.task-details {
+    display: flex; /* Usar flexbox para alinear */
+    justify-content: space-between; /* Espacio entre elementos */
+    align-items: center; /* Centrar verticalmente */
+}
+
+.priority {
+    margin-bottom: 8px; /* Espacio debajo de las estrellas */
+}
+
+.star {
+    font-size: 20px; /* Tamaño de las estrellas */
+    color: lightgray; /* Color por defecto de las estrellas */
+}
+
+.star.filled {
+    color: gold; /* Color de las estrellas llenas */
+}
+
+.users {
+    display: flex; /* Alinear los avatares en fila */
+}
+
+.user-avatar {
+    width: 30px; /* Ancho de los avatares */
+    height: 30px; /* Alto de los avatares */
+    border-radius: 50%; /* Esquinas redondeadas */
+    margin-left: 5px; /* Espacio entre avatares */
+    border: 2px solid #475B63; /* Bordes de los avatares */
+}
