@@ -41,9 +41,36 @@
 }
 
 .user-avatar {
-    width: 30px; /* Ancho de los avatares */
-    height: 30px; /* Alto de los avatares */
-    border-radius: 50%; /* Esquinas redondeadas */
-    margin-left: 5px; /* Espacio entre avatares */
-    border: 2px solid #475B63; /* Bordes de los avatares */
+    width: 30px; 
+    height: 30px; 
+    border-radius: 50%; 
+    margin-left: 5px; 
+    border: 2px solid #475B63; 
+}
+
+
+
+
+#cartel-rojo {
+    position: fixed;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    background-color: red;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+    z-index: 1000; 
+}
+
+#fondo-gris {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.144); 
+    z-index: 999; 
 }
