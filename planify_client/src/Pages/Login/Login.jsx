@@ -28,7 +28,7 @@ const Login = () => {
                     <button className='py-1 px-5 my-2 rounded-3 Button-Login'>Login</button>
                     </div>
                     <div className='my-2'>
-                    <a className=' text-decoration-none text-dark'>Don’t you have an account? Register here</a>
+                    <p>Don’t you have an account? <a href='/Register' className='text-dark'>Register here</a></p>
                     </div>
                 </div>
 
