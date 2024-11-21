@@ -30,7 +30,7 @@ const Register = () => {
       </main>
       <footer><Footer /></footer>
     </div>
-  )
+  ) 
 }
 
 export default Register
