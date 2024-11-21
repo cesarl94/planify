@@ -1,6 +1,5 @@
 .login-card{
     background-color: #BACDB0;
-
     border-radius: 20px;
     border-style: solid ;
     border-color: #729B79;
@@ -24,3 +23,4 @@
 .Button-Login:hover{
     background-color: #58805e;
 }
+
