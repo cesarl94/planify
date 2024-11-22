@@ -33,9 +33,14 @@ const StatusCard = () => {
                         description="Completar el informe de ventas" 
                         priority={3} 
                         users={[
-                            { name: 'Juan', avatarUrl: 'url_del_avatar_juan' },
-                            { name: 'Ana', avatarUrl: 'url_del_avatar_ana' },
-                            { name: 'Luis', avatarUrl: 'url_del_avatar_luis' },
+                            // Ejemplos de avatares hardcodeados
+                            { name: 'Juan', avatarUrl: 'https://cdn-icons-png.freepik.com/512/3670/3670051.png' },
+                            { name: 'Ana', avatarUrl: 'https://cdn-icons-png.freepik.com/512/3670/3670051.png' },
+                            { name: 'Luis', avatarUrl: 'https://cdn-icons-png.freepik.com/512/3670/3670051.png' },
+                            
+                            // { name: 'Juan', avatarUrl: 'url_del_avatar_juan' },
+                            // { name: 'Ana', avatarUrl: 'url_del_avatar_ana' },
+                            // { name: 'Luis', avatarUrl: 'url_del_avatar_luis' },
                         ]}
                     />
                 </div>
