@@ -1,16 +1,25 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 const CardStatusContext = createContext();
 
 const CardStatusProvider = ({ children }) => {
 
 
-    //Stear los estamos cuando accedemos al endpoint ahora esta hardcodeado
-    const [titles, setTitles] = useState([
-        'Backlog',
-        'To Do',
-        'In Process',
-        'Done'
-      ]);
+      const [titles, setTitles] = useState([]);
+    
+      const fetchTitles = async () => {
+        try {
+          const response = await fetch('http://localhost:4000/api/estados');
+          const data = await response.json();
+          const stateTitles = data.map(item => item.Nombre);
+          setTitles(stateTitles);
+        } catch (error) {
+          console.error('Error al obtener los estados:', error);
+        }
+      };
+
+      useEffect(() => {
+        fetchTitles();
+      }, []);
 
       const addTitle = (newTitle) => {
         setTitles((prevTitles) => [...prevTitles, newTitle]);
