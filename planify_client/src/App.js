@@ -7,6 +7,7 @@ import Login from "./Pages/Login/Login";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Register from "./Pages/Register/Register";
 import RegisterEnded from "./Pages/RegisterEnded/RegisterEnded";
+import { TaskProvider } from "./Context/TaskContext";
 
 const router = createBrowserRouter([
   {
@@ -33,11 +34,13 @@ function App() {
 
   return (
     <div >
+      <TaskProvider>
       <CardStatusProvider>
         <UserProvider>
           <RouterProvider router={router}></RouterProvider>
         </UserProvider>
       </CardStatusProvider>
+      </TaskProvider>
     </div>
   );
 }
