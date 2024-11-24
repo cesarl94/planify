@@ -13,7 +13,7 @@ CREATE TABLE Tareas (
   prioridad INT,
   id_estado INT,
   PRIMARY KEY (id_tarea),
-  FOREIGN KEY (id_estado) REFERENCES Estados(id_estado) ON DELETE CASCADE,
+  FOREIGN KEY (id_estado) REFERENCES Estados(id_estado) ON DELETE CASCADE
 );
 
 CREATE TABLE Usuarios (
@@ -29,7 +29,7 @@ CREATE TABLE Usuarios (
 CREATE TABLE Estados (
   id_estado INT AUTO_INCREMENT,
   orden INT,
-  nombre VARCHAR(50) NOT NULL
+  nombre VARCHAR(50) NOT NULL,
   PRIMARY KEY (id_estado)
 );
 
@@ -53,13 +53,13 @@ INSERT INTO Usuarios (correo, nombre, apellido) VALUES
 INSERT INTO Tareas (nombre, descripcion, fecha_limite, id_estado) VALUES 
 ('Tarea 1', 'Descripción de la Tarea 1', '2024-12-31', 1),
 ('Tarea 2', 'Descripción de la Tarea 2', '2024-11-30', 2),
-('Tarea 3', 'Descripción de la Tarea 3', '2024-10-31', 3);
+('Tarea 3', 'Descripción de la Tarea 3', '2024-10-31', 3),
 ('Tarea 4', 'Descripción de la Tarea 4', '2024-10-31', 3);
 
 INSERT INTO Estados (nombre) VALUES 
 ('Backlog'),
 ('To Do'),
-('In Process');
+('In Process'),
 ('Done');
 
 
