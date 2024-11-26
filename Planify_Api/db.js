@@ -3,7 +3,9 @@ const readline = require("readline");
 const sqlParser = require("./sqlParser");
 const flags = require("./flags.js");
 
-// Configurar la conexión a la base de datos
+const dbContainer = {
+    db: Object,
+};
 
 // Función para convertir la ejecución de db.query en una promesa
 function executeQuery(db, sqlSentence) {
@@ -39,7 +41,8 @@ const rl = readline.createInterface({
 });
 
 rl.question("Ingrese root password: ", (rootPassword) => {
-    const db = mysql.createConnection({
+    // Configurar la conexión a la base de datos
+    dbContainer.db = mysql.createConnection({
         host: flags.SQLServerHost, // O 'localhost'
         user: flags.SQLServerUser, // Usuario root
         password: rootPassword, // Contraseña
@@ -48,7 +51,7 @@ rl.question("Ingrese root password: ", (rootPassword) => {
     });
 
     // Conectar a la base de datos
-    db.connect((err) => {
+    dbContainer.db.connect((err) => {
         if (err) {
             console.error("Error al conectar a la base de datos:", err.message);
             return;
@@ -57,39 +60,39 @@ rl.question("Ingrese root password: ", (rootPassword) => {
         console.log("Conexión exitosa a la base de datos MySQL");
 
         if (flags.ExecuteSQLSentences) {
-            db.query(`CREATE DATABASE IF NOT EXISTS ${flags.TestDBName}`, (err) => {
+            dbContainer.db.query(`CREATE DATABASE IF NOT EXISTS ${flags.TestDBName}`, (err) => {
                 if (err) {
                     console.error("Error al crear la base de datos:", err);
-                    db.end();
+                    dbContainer.db.end();
                     return;
                 }
 
                 console.log("Base de datos creada o ya existía.");
 
                 // Cambiar a la base de datos y ejecutar el script SQL
-                db.changeUser({ database: flags.TestDBName }, (err) => {
+                dbContainer.db.changeUser({ database: flags.TestDBName }, (err) => {
                     if (err) {
                         console.error("Error al seleccionar la base de datos:\n", err);
-                        db.end();
+                        dbContainer.db.end();
                         return;
                     }
 
                     const sqlSentences = sqlParser.getSqlSentences("basedepruebas.sql");
 
-                    executeSqlSentences(db, sqlSentences)
+                    executeSqlSentences(dbContainer.db, sqlSentences)
                         .then(() => {
-                            db.end();
+                            //dbContainer.db.end();
                         }) // Cerrar conexión al terminar
                         .catch((err) => {
                             console.error("Error durante la ejecución:", err);
-                            db.end(); // Asegurarse de cerrar la conexión en caso de error
+                            dbContainer.db.end(); // Asegurarse de cerrar la conexión en caso de error
                         });
                 });
             });
         }
     });
 
-    module.exports = db; // Exportar la conexión
-
     rl.close();
 });
+
+module.exports = dbContainer; // Exportar el container de la conexión

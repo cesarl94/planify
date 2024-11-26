@@ -1,11 +1,9 @@
-const express = require('express');
-const db = require('../db'); 
+const express = require("express");
 
 const router = express.Router();
 
-
-
-router.get('/estados/tareas', (req, res) => {
+router.get("/estados/tareas", (req, res) => {
+    const dbContainer = require("../db");
     const query = `
     SELECT  
         e.id_estado, 
@@ -18,13 +16,14 @@ router.get('/estados/tareas', (req, res) => {
     INNER JOIN tareas t ON t.id_estado = e.id_estado
     INNER JOIN usuarios_tareas ut ON ut.id_tarea = t.id_tarea
     INNER JOIN usuarios u ON u.id_usuario = ut.id_usuario
-`;    db.query(query, (err, results) => {
-      if (err) {
-        res.status(500).json({ error: err.message });
-      } else {
-        res.json(results);
-      }
+`;
+    dbContainer.db.query(query, (err, results) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+        } else {
+            res.json(results);
+        }
     });
 });
 
-module.exports = router; 
+module.exports = router;

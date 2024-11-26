@@ -17,6 +17,7 @@ app.use(express.json());
 // Iniciar el servidor
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
+    require("./db");
 
     const EstadosRoutes = require("./Estados/Estados"); // Importar las rutas de usuarios
     const TaskRoutes = require("./Task/Taks"); // Importar las rutas de usuarios

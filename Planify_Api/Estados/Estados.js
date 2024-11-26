@@ -1,19 +1,17 @@
-const express = require('express');
-const db = require('../db'); 
+const express = require("express");
 
 const router = express.Router();
 
-
-
-router.get('/estados', (req, res) => {
-    const query = 'SELECT * FROM estado ';
-    db.query(query, (err, results) => {
-      if (err) {
-        res.status(500).json({ error: err.message });
-      } else {
-        res.json(results);
-      }
+router.get("/estados", (req, res) => {
+    const dbContainer = require("../db");
+    const query = "SELECT * FROM Estados ";
+    dbContainer.db.query(query, (err, results) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+        } else {
+            res.json(results);
+        }
     });
 });
 
-module.exports = router; 
+module.exports = router;
