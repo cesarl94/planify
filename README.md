@@ -1,4 +1,6 @@
-### Notas:
+### Notas:<br>
+
+Usamos MySQL Server 8
 
 ---
 
@@ -6,18 +8,21 @@
 
 ---
 
-Para conectar una db y hacer pruebas locales, tenemos que crear una nueva desde MySQL Workbench basandonos en el .sql que está en Planify_Api. 
+Para conectar una db y hacer pruebas locales, podemos ejecutar el backend con ``cd .\Planify_Api\`` y luego ``node index`` y luego se nos pedirá ingresar el root password que hayamos elegido cuando instalamos MySQL. 
 
-Luego, ir al archivo Planify_Api/db.js y rellenar ahí con los datos con los que acabamos de crear nuestro host local de la db.
+Este password se pide en tiempo de ejecución para no tener que subir contraseñas al repositorio público.
 
-```js
-const db = mysql.createConnection({
-  host: '127.0.0.1',      // O 'localhost'
-  user: 'root',           // Usuario root
-  password: '1234',       // Contraseña
-  database: 'tp_basededatos',  // Nombre de la base de datos
-  port: 3306              // Puerto por defecto de MySQL
-});
-```
+La configuración de la db se puede hacer desde el archivo [flags.js](Planify_Api/flags.js), donde podremos establecer los parámetros de conexión a nuestra db, permitiendonos así conectarnos a una db ya creada, o crear una nueva llamada ``tp_basededatos`` acorde a las sentencias en el [script con todas las sentencias sql.](Planify_Api/tp_basededatos.sql) La constante ``ExecuteSQLSentences`` en [flags.js](Planify_Api/flags.js) va a definir si creamos la db o nos conectamos a una ya existente.
+
+Si está en true, y ejecutamos el proyecto, esto borrará la db de pruebas (llamada ``tp_basededatos``) si ya existía y creará una nueva a partir de los datos que estén en el [script con todas las sentencias sql](Planify_Api/tp_basededatos.sql) y esto nos permitirá al equipo usar una db ficticia para el desarrollo del proyecto y tenerla así cargada en el repositorio. Las sentencias se ejecutarán en orden, y el orden de ejecución es importante, así que hay que cuidar de no incluír datos que dependan de otros datos que aún no se crearon. <br><br>
+Por ejemplo:
+* Definiciones de tablas con FOREIGN_KEYS de otras tablas que aún no se crearon
+* Insertar objetos en tablas que aún no se crearon
+* Insertar objetos con FOREIGN_KEYS de mentira. Los datos deben existir.
 
 ---
+
+TODO:<br>
+Problemas: 
+* No se puede establecer conexión
+* Error: No database selected

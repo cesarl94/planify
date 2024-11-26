@@ -1,9 +1,33 @@
+-- Si la db ya existía, la eliminamos para luego volver a crearla
+-- (De esta forma mantenemos actualizados los datos de la db de prueba
+-- con lo maquetado acá)
+
+DROP SCHEMA IF EXISTS `tp_basededatos`;
+
 -- Creacion de base de datos
-CREATE SCHEMA `tp_basededatos`;
+
+CREATE SCHEMA IF NOT EXISTS `tp_basededatos`;
 
 -- Creacion de tablas
 
-CREATE TABLE Tareas (
+CREATE TABLE IF NOT EXISTS Estados (
+  id_estado INT AUTO_INCREMENT,
+  orden INT,
+  nombre VARCHAR(50) NOT NULL,
+  PRIMARY KEY (id_estado)
+);
+
+CREATE TABLE IF NOT EXISTS Usuarios (
+  id_usuario INT AUTO_INCREMENT,
+  correo VARCHAR(250) NOT NULL UNIQUE,
+  nombre VARCHAR(100) NOT NULL,
+  apellido VARCHAR(100) NOT NULL,
+  foto_perfil TEXT,
+  verificado BOOLEAN,
+  PRIMARY KEY (id_usuario)
+);
+
+CREATE TABLE IF NOT EXISTS Tareas (
   id_tarea INT AUTO_INCREMENT,
   nombre VARCHAR(100) NOT NULL,
   descripcion VARCHAR(250),
@@ -16,24 +40,7 @@ CREATE TABLE Tareas (
   FOREIGN KEY (id_estado) REFERENCES Estados(id_estado) ON DELETE CASCADE
 );
 
-CREATE TABLE Usuarios (
-  id_usuario INT AUTO_INCREMENT,
-  correo VARCHAR(250) NOT NULL UNIQUE,
-  nombre VARCHAR(100) NOT NULL,
-  apellido VARCHAR(100) NOT NULL,
-  foto_perfil TEXT,
-  verificado BOOLEAN,
-  PRIMARY KEY (id_usuario)
-);
-
-CREATE TABLE Estados (
-  id_estado INT AUTO_INCREMENT,
-  orden INT,
-  nombre VARCHAR(50) NOT NULL,
-  PRIMARY KEY (id_estado)
-);
-
-CREATE TABLE Usuarios_Tareas (
+CREATE TABLE IF NOT EXISTS Usuarios_Tareas (
   id_relacion INT AUTO_INCREMENT,
   id_usuario INT,
   id_tarea INT,
@@ -44,28 +51,22 @@ CREATE TABLE Usuarios_Tareas (
 
 -- Insertar datos a la base base de datos
 
-INSERT INTO Usuarios (correo, nombre, apellido) VALUES 
-('usuario1@example.com', 'Juan', 'Pérez'),
-('usuario2@example.com', 'Ana', 'López'),
-('usuario3@example.com', 'Luis', 'García');
+INSERT IGNORE INTO Estados (nombre) VALUES ('Backlog');
+INSERT IGNORE INTO Estados (nombre) VALUES ('To Do');
+INSERT IGNORE INTO Estados (nombre) VALUES ('In Process');
+INSERT IGNORE INTO Estados (nombre) VALUES ('Done');
 
+INSERT IGNORE INTO Usuarios (correo, nombre, apellido) VALUES ('usuario1@example.com', 'Juan', 'Pérez');
+INSERT IGNORE INTO Usuarios (correo, nombre, apellido) VALUES ('usuario2@example.com', 'Ana', 'López');
+INSERT IGNORE INTO Usuarios (correo, nombre, apellido) VALUES ('usuario3@example.com', 'Luis', 'García');
 
-INSERT INTO Tareas (nombre, descripcion, fecha_limite, id_estado) VALUES 
-('Tarea 1', 'Descripción de la Tarea 1', '2024-12-31', 1),
-('Tarea 2', 'Descripción de la Tarea 2', '2024-11-30', 2),
-('Tarea 3', 'Descripción de la Tarea 3', '2024-10-31', 3),
-('Tarea 4', 'Descripción de la Tarea 4', '2024-10-31', 3);
+INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado) VALUES ('Tarea 1', 'Descripción de la Tarea 1', '2024-12-31', 1);
+INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado) VALUES ('Tarea 2', 'Descripción de la Tarea 2', '2024-11-30', 2);
+INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado) VALUES ('Tarea 3', 'Descripción de la Tarea 3', '2024-10-31', 3);
+INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado) VALUES ('Tarea 4', 'Descripción de la Tarea 4', '2024-10-31', 3);
 
-INSERT INTO Estados (nombre) VALUES 
-('Backlog'),
-('To Do'),
-('In Process'),
-('Done');
-
-
-INSERT INTO Usuarios_Tareas (id_usuario, id_tarea) VALUES 
-(1, 1),  -- Juan tiene Tarea 1
-(1, 2),  -- Juan tiene Tarea 2
-(2, 2),  -- Ana tiene Tarea 2
-(2, 3),  -- Ana tiene Tarea 3
-(3, 1);  -- Luis tiene Tarea 1
+INSERT IGNORE INTO Usuarios_Tareas (id_usuario, id_tarea) VALUES (1, 1);  -- Juan tiene Tarea 1
+INSERT IGNORE INTO Usuarios_Tareas (id_usuario, id_tarea) VALUES (1, 2);  -- Juan tiene Tarea 2
+INSERT IGNORE INTO Usuarios_Tareas (id_usuario, id_tarea) VALUES (2, 2);  -- Ana tiene Tarea 2
+INSERT IGNORE INTO Usuarios_Tareas (id_usuario, id_tarea) VALUES (2, 3);  -- Ana tiene Tarea 3
+INSERT IGNORE INTO Usuarios_Tareas (id_usuario, id_tarea) VALUES (3, 1);  -- Luis tiene Tarea 1
