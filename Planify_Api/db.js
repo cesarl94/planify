@@ -57,7 +57,7 @@ rl.question("Ingrese root password: ", (rootPassword) => {
         console.log("Conexión exitosa a la base de datos MySQL");
 
         if (flags.ExecuteSQLSentences) {
-            db.query("CREATE DATABASE IF NOT EXISTS tp_basededatos", (err) => {
+            db.query(`CREATE DATABASE IF NOT EXISTS ${flags.TestDBName}`, (err) => {
                 if (err) {
                     console.error("Error al crear la base de datos:", err);
                     db.end();
@@ -67,14 +67,14 @@ rl.question("Ingrese root password: ", (rootPassword) => {
                 console.log("Base de datos creada o ya existía.");
 
                 // Cambiar a la base de datos y ejecutar el script SQL
-                db.changeUser({ database: "tp_basededatos" }, (err) => {
+                db.changeUser({ database: flags.TestDBName }, (err) => {
                     if (err) {
                         console.error("Error al seleccionar la base de datos:\n", err);
                         db.end();
                         return;
                     }
 
-                    const sqlSentences = sqlParser.getSqlSentences("tp_basededatos.sql");
+                    const sqlSentences = sqlParser.getSqlSentences("basedepruebas.sql");
 
                     executeSqlSentences(db, sqlSentences)
                         .then(() => {

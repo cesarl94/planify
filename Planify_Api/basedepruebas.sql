@@ -2,11 +2,15 @@
 -- (De esta forma mantenemos actualizados los datos de la db de prueba
 -- con lo maquetado acá)
 
-DROP SCHEMA IF EXISTS `tp_basededatos`;
+DROP SCHEMA IF EXISTS `%DBNAME%`;
 
 -- Creacion de base de datos
 
-CREATE SCHEMA IF NOT EXISTS `tp_basededatos`;
+CREATE SCHEMA IF NOT EXISTS `%DBNAME%`;
+
+-- Escogemos esta base de datos
+
+USE `%DBNAME%`;
 
 -- Creacion de tablas
 

@@ -9,8 +9,9 @@ function containsValidSQLCharacters(str) {
 
 function getSqlSentences(filename) {
     const fs = require("fs");
+    const flags = require("./flags.js");
 
-    let sqlScript = fs.readFileSync(filename, "utf8");
+    const sqlScript = fs.readFileSync(filename, "utf8").replaceAll("%DBNAME%", flags.TestDBName);
 
     let lines = [];
 
