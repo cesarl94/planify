@@ -12,7 +12,7 @@ router.get("/estados/tareas", (req, res) => {
         t.nombre, 
         t.descripcion, 
         CONCAT(u.Nombre, ' ', u.apellido) AS 'Nombre_apellido'
-    FROM estado e
+    FROM estados e
     INNER JOIN tareas t ON t.id_estado = e.id_estado
     INNER JOIN usuarios_tareas ut ON ut.id_tarea = t.id_tarea
     INNER JOIN usuarios u ON u.id_usuario = ut.id_usuario
