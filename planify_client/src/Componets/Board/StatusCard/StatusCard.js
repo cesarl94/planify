@@ -14,7 +14,7 @@ const StatusCard = () => {
             {titles.map((status) => (
                     <div key={status.id_estado} className="StatusCard-container">
                         <div className="TitleStatus-container">
-                            <h3>{status.Nombre}</h3>
+                            <h3>{status.nombre}</h3>
                             <div>
                                 <button className="StatusCard-Button">
                                     <img src={addtask} className="iconstatus" alt="Add task" />
