@@ -4,32 +4,36 @@ import addtask from '../../../Images/icons/add-task.png';
 import edit from '../../../Images/icons/edit.png';
 import deleteicon from '../../../Images/icons/delete.png';
 import { CardStatusContext } from '../../../Context/CardStatusContext';
+import TaskCard2 from '../TaskCard/TaskCard2';
 import TaskCard from '../TaskCard/TaskCard';
 
 const StatusCard = () => {
-
-    const {titles} = useContext(CardStatusContext)
+    const { titles } = useContext(CardStatusContext);
     return (
         <div className="StatusCard-scroll">
-            {titles.map((title, index) => (
-              
-                <div key={index} className="StatusCard-container">
-                    <div className="TitleStatus-container">
-                        <h3>{title}</h3>
-                        <div>
-                            <button className="StatusCard-Button">
-                                <img src={addtask} className="iconstatus" alt="Add task" />
-                            </button>
-                            <button className="StatusCard-Button">
-                                <img src={edit} className="iconstatus" alt="Edit" />
-                            </button>
-                            <button className="StatusCard-Button">
-                                <img src={deleteicon} className="iconstatus" alt="Delete" />
-                            </button>
+            {titles.map((status) => (
+                    <div key={status.id_estado} className="StatusCard-container">
+                        <div className="TitleStatus-container">
+                            <h3>{status.nombre}</h3>
+                            <div>
+                                <button className="StatusCard-Button">
+                                    <img src={addtask} className="iconstatus" alt="Add task" />
+                                </button>
+                                <button className="StatusCard-Button">
+                                    <img src={edit} className="iconstatus" alt="Edit" />
+                                </button>
+                                <button className="StatusCard-Button">
+                                    <img src={deleteicon} className="iconstatus" alt="Delete" />
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <TaskCard 
+
+                        <TaskCard2 estadoId={status.id_estado} />
+
+               
+
+
+                        {/* <TaskCard 
                         description="Completar el informe de ventas" 
                         priority={3} 
                         users={[
@@ -42,12 +46,12 @@ const StatusCard = () => {
                             // { name: 'Ana', avatarUrl: 'url_del_avatar_ana' },
                             // { name: 'Luis', avatarUrl: 'url_del_avatar_luis' },
                         ]}
-                    />
-                </div>
+                    /> */}
+                    </div>
+                
             ))}
         </div>
     );
 };
 
 export default StatusCard;
-
