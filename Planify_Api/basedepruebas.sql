@@ -61,9 +61,9 @@ INSERT IGNORE INTO Estados (nombre) VALUES ('To Do');
 INSERT IGNORE INTO Estados (nombre) VALUES ('In Process');
 INSERT IGNORE INTO Estados (nombre) VALUES ('Done');
 
-INSERT IGNORE INTO Usuarios (correo, nombre, apellido) VALUES ('usuario1@example.com', 'Juan', 'Pérez');
-INSERT IGNORE INTO Usuarios (correo, nombre, apellido) VALUES ('usuario2@example.com', 'Ana', 'López');
-INSERT IGNORE INTO Usuarios (correo, nombre, apellido) VALUES ('usuario3@example.com', 'Luis', 'García');
+INSERT IGNORE INTO Usuarios (correo, hash, nombre, apellido) VALUES ('usuario1@example.com', '$2b$10$nOUIs5kJ7naTuTFkBy1veuK0kSxUFXfuaOKdOKf9xYT0KKIGSJwFa', 'Juan', 'Pérez');
+INSERT IGNORE INTO Usuarios (correo, hash, nombre, apellido) VALUES ('usuario2@example.com', '$2b$10$nOUIs5kJ7naTuTFkBy1veaK0kSxUFXfuaOKdOKf9xYT0KKIGSJwFa', 'Ana', 'López');
+INSERT IGNORE INTO Usuarios (correo, hash, nombre, apellido) VALUES ('usuario3@example.com', '$2b$10$nOUIs5kJ7naTuTFkBy1veeK0kSxUFXfuaOKdOKf9xYT0KKIGSJwFa', 'Luis', 'García');
 
 INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado) VALUES ('Tarea 1', 'Descripción de la Tarea 1', '2024-12-31', 1);
 INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado) VALUES ('Tarea 2', 'Descripción de la Tarea 2', '2024-11-30', 2);
