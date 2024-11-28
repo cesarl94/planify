@@ -16,7 +16,7 @@ USE `%DBNAME%`;
 
 CREATE TABLE IF NOT EXISTS Estados (
   id_estado INT AUTO_INCREMENT,
-  orden INT,
+  orden INT NOT NULL,
   nombre VARCHAR(50) NOT NULL,
   PRIMARY KEY (id_estado)
 );
@@ -56,10 +56,10 @@ CREATE TABLE IF NOT EXISTS Usuarios_Tareas (
 
 -- Insertar datos a la base base de datos
 
-INSERT IGNORE INTO Estados (nombre) VALUES ('Backlog');
-INSERT IGNORE INTO Estados (nombre) VALUES ('To Do');
-INSERT IGNORE INTO Estados (nombre) VALUES ('In Process');
-INSERT IGNORE INTO Estados (nombre) VALUES ('Done');
+INSERT IGNORE INTO Estados (nombre, orden) VALUES ('Backlog', 0);
+INSERT IGNORE INTO Estados (nombre, orden) VALUES ('To Do', 1);
+INSERT IGNORE INTO Estados (nombre, orden) VALUES ('In Process', 2);
+INSERT IGNORE INTO Estados (nombre, orden) VALUES ('Done', 3);
 
 INSERT IGNORE INTO Usuarios (correo, hash, nombre, apellido) VALUES ('usuario1@example.com', '$2b$10$nOUIs5kJ7naTuTFkBy1veuK0kSxUFXfuaOKdOKf9xYT0KKIGSJwFa', 'Juan', 'Pérez');
 INSERT IGNORE INTO Usuarios (correo, hash, nombre, apellido) VALUES ('usuario2@example.com', '$2b$10$nOUIs5kJ7naTuTFkBy1veaK0kSxUFXfuaOKdOKf9xYT0KKIGSJwFa', 'Ana', 'López');

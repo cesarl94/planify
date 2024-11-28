@@ -1,5 +1,5 @@
 const express = require("express");
-const { validateEmail, validateName, countCharacterOccurrences } = require("../playnify_shared/utils");
+const { validateEmail, validateName } = require("../playnify_shared/utils");
 const dbContainer = require("./db");
 
 const router = express.Router();
@@ -38,6 +38,42 @@ router.get("/estados/tareas", (req, res) => {
     });
 });
 
+router.post("/newstate", (req, res) => {
+    const nombre = req.body.nombre;
+    const orden = req.body.orden;
+
+    if (nombre == undefined || orden == undefined) {
+        res.status(400).json({ error: "Missing data. Required data: nombre, orden" });
+    }
+
+    const nameValidation = validateName(nombre, 1, 50, true);
+
+    if (!nameValidation.valid) {
+        res.status(400).json({ error: nameValidation.error });
+        return;
+    }
+
+    if (orden < 0) {
+        res.status(400).json({ error: "The value 'orden' can't be less than 0." });
+        return;
+    }
+
+    dbContainer.db.execute(`INSERT INTO estados (nombre, orden) VALUES (?, ?)`, [nombre, orden], (err, results) => {
+        if (err) {
+            res.status(400).json({ error: err.message });
+            return;
+        }
+
+        const id_estado = results.insertId;
+
+        res.status(201).json({
+            id_estado,
+            nombre,
+            orden,
+        });
+    });
+});
+
 router.post("/newregister", (req, res) => {
     const correo = req.body.correo;
     const hash = req.body.hash;
@@ -56,18 +92,23 @@ router.post("/newregister", (req, res) => {
         return;
     }
 
-    if (hash.length != 60 || countCharacterOccurrences(hash, "$") < 3) {
-        res.status(400).json({ error: `The provided password hash is not in the correct format${hash.length}${countCharacterOccurrences(hash, "$")}` });
+    const bcryptRegex = /^\$2[ayb]\$[0-9]{2}\$[./A-Za-z0-9]{53}$/;
+    function isValidBcryptHash(hash) {
+        return bcryptRegex.test(hash);
+    }
+
+    if (!isValidBcryptHash(hash)) {
+        res.status(400).json({ error: `The provided password hash is not in the correct format.` });
         return;
     }
 
-    const nameValidation = validateName(nombre);
+    const nameValidation = validateName(nombre, 3, 100, false);
     if (!nameValidation.valid) {
         res.status(400).json({ error: nameValidation.error });
         return;
     }
 
-    const lastNameValidation = validateName(apellido);
+    const lastNameValidation = validateName(apellido, 3, 100, false);
     if (!lastNameValidation.valid) {
         res.status(400).json({ error: lastNameValidation.error });
         return;

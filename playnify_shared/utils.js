@@ -1,8 +1,3 @@
-// Count character occurrences in a string
-function countCharacterOccurrences(str, char) {
-    return str.split(char).length - 1;
-}
-
 // Check if a string contains numbers
 function containsNumbers(inputString) {
     // Regular expression to search for any number in the string
@@ -83,23 +78,23 @@ function validateEmail(email) {
 }
 
 // Verify that a text field does not contain numbers and has at least 3 characters
-function validateName(element) {
+function validateName(element, minLength = 3, maxLength = 50, allowedNumbers = false) {
     if (element === "") {
         return {
             valid: false,
             error: "The field cannot be empty",
         };
-    } else if (containsNumbers(element)) {
+    } else if (!allowedNumbers && containsNumbers(element)) {
         return {
             valid: false,
             error: "The field must not contain numbers",
         };
-    } else if (element.length <= 2) {
+    } else if (element.length < minLength) {
         return {
             valid: false,
-            error: "The field must have at least 3 characters",
+            error: `The field must have at least ${minLength} characters`,
         };
-    } else if (element.length > 100) {
+    } else if (element.length > maxLength) {
         return {
             valid: false,
             error: "The input value is too long",
@@ -110,4 +105,4 @@ function validateName(element) {
     };
 }
 
-module.exports = { countCharacterOccurrences, containsNumbers, validateEmail, validateName };
+module.exports = { containsNumbers, validateEmail, validateName };
