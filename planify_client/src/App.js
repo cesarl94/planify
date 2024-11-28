@@ -8,6 +8,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Register from "./Pages/Register/Register";
 import RegisterEnded from "./Pages/RegisterEnded/RegisterEnded";
 import { TaskProvider } from "./Context/TaskContext";
+import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
+import SentEmail from "./Pages/SentEmail/SentEmail";
+import RecoverPassword from "./Pages/RecoverPassword/RecoverPassword";
+import PasswordRecovered from "./Pages/PasswordRecovered/PasswordRecovered";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +29,22 @@ const router = createBrowserRouter([
   {
     path: "/RegisterEnded",
     element: <RegisterEnded/>
+  },
+  {
+    path: "/ForgotPassword",
+    element: <ForgotPassword/>
+  },
+  {
+    path: "/SentEmail",
+    element: <SentEmail/>
+  },
+  {
+    path: "/RecoverPassword",
+    element: <RecoverPassword/>
+  },
+  {
+    path: "/PasswordRecovered",
+    element: <PasswordRecovered/>
   }
 ]);
 

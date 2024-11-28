@@ -3,7 +3,7 @@ import Navbar from '../../Componets/Navbar/Navbar'
 import Footer from '../../Componets/Footer/Footer'
 import "./RegisterEnded.css"
 
-const Register = () => {
+const RegisterEnded = () => {
   return (
     <div className='container-body'>
       <nav><Navbar /></nav>
@@ -28,4 +28,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default RegisterEnded
