@@ -44,17 +44,17 @@ router.post("/newstate", (req, res) => {
 
     if (nombre == undefined || orden == undefined) {
         res.status(400).json({ error: "Missing data. Required data: nombre, orden" });
+        return;
     }
 
     const nameValidation = validateName(nombre, 1, 50, true);
-
     if (!nameValidation.valid) {
         res.status(400).json({ error: nameValidation.error });
         return;
     }
 
     if (orden < 0) {
-        res.status(400).json({ error: "The value 'orden' can't be less than 0." });
+        res.status(400).json({ error: "The value 'orden' can't be negative." });
         return;
     }
 
@@ -74,6 +74,52 @@ router.post("/newstate", (req, res) => {
     });
 });
 
+router.put("/updatestate", (req, res) => {
+    const id_estado = req.body.id_estado;
+    const orden = req.body.orden;
+    const nombre = req.body.nombre;
+
+    if (id_estado == undefined || orden == undefined || nombre == undefined) {
+        res.status(400).json({ error: "Missing data. Required data: id_estado, orden, nombre" });
+        return;
+    }
+
+    if (id_estado < 1) {
+        res.status(400).json({ error: "The value 'id_estado' can't be less than 1" });
+        return;
+    }
+
+    const nameValidation = validateName(nombre, 1, 50, true);
+    if (!nameValidation.valid) {
+        res.status(400).json({ error: nameValidation.error });
+        return;
+    }
+
+    if (orden < 0) {
+        res.status(400).json({ error: "The value 'orden' can't be negative." });
+        return;
+    }
+
+    dbContainer.db.execute(`UPDATE estados SET orden = ?, nombre = ? WHERE id_estado = ?`, [orden, nombre, id_estado], (err, results) => {
+        if (err) {
+            res.status(400).json({ error: err.message });
+            return;
+        }
+
+        // It verifies if no one row was updated
+        if (results.affectedRows === 0) {
+            res.status(400).json({ error: "Provided value 'id_estado' isn't in our data base." });
+            return;
+        }
+
+        res.status(200).json({
+            id_estado,
+            nombre,
+            orden,
+        });
+    });
+});
+
 router.post("/newregister", (req, res) => {
     const correo = req.body.correo;
     const hash = req.body.hash;
@@ -86,7 +132,6 @@ router.post("/newregister", (req, res) => {
     }
 
     const mailValidation = validateEmail(correo);
-
     if (!mailValidation.valid) {
         res.status(400).json({ error: mailValidation.error });
         return;
