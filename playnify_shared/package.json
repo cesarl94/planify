@@ -1,0 +1,9 @@
+{
+    "name": "playnify_shared",
+    "version": "1.0.0",
+    "main": "utils.js",
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": ""
+}

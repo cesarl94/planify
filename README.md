@@ -8,7 +8,7 @@ Usamos MySQL Server 8
 
 ---
 
-Para conectar una db y hacer pruebas locales, podemos ejecutar el backend con ``cd .\Planify_Api\`` y luego ``node index`` y luego se nos pedirá ingresar el root password que hayamos elegido cuando instalamos MySQL. 
+Para conectar una db y hacer pruebas locales, podemos ejecutar el backend ejecutando el NPM Script ``start``. Esto actualizará todas las dependencias y luego se nos pedirá ingresar el root password que hayamos elegido cuando instalamos MySQL. 
 
 Este password se pide en tiempo de ejecución para no tener que subir contraseñas al repositorio público.
 
@@ -25,4 +25,3 @@ Por ejemplo:
 TODO:<br>
 Problemas: 
 * No se puede establecer conexión
-* Error: No database selected
