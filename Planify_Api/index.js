@@ -19,10 +19,8 @@ app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
     require("./db");
 
-    const EstadosRoutes = require("./Estados/Estados"); // Importar las rutas de usuarios
-    const TaskRoutes = require("./Task/Taks"); // Importar las rutas de usuarios
+    const router = require("./router");
 
     // Usar las rutas de estados
-    app.use("/api", EstadosRoutes);
-    app.use("/api", TaskRoutes);
+    app.use("/api", router);
 });
