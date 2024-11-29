@@ -53,11 +53,6 @@ router.post("/newstate", (req, res) => {
         return;
     }
 
-    if (orden < 0) {
-        res.status(400).json({ error: "The value 'orden' can't be negative." });
-        return;
-    }
-
     dbContainer.db.execute(`INSERT INTO estados (nombre, orden) VALUES (?, ?)`, [nombre, orden], (err, results) => {
         if (err) {
             res.status(400).json({ error: err.message });
@@ -66,11 +61,7 @@ router.post("/newstate", (req, res) => {
 
         const id_estado = results.insertId;
 
-        res.status(201).json({
-            id_estado,
-            nombre,
-            orden,
-        });
+        res.status(201).json({ id_estado, nombre, orden });
     });
 });
 
@@ -79,8 +70,8 @@ router.put("/updatestate", (req, res) => {
     const orden = req.body.orden;
     const nombre = req.body.nombre;
 
-    if (id_estado == undefined || orden == undefined || nombre == undefined) {
-        res.status(400).json({ error: "Missing data. Required data: id_estado, orden, nombre" });
+    if (id_estado == undefined || (orden == undefined && nombre == undefined)) {
+        res.status(400).json({ error: "Missing data. Required data: id_estado && (orden || nombre)" });
         return;
     }
 
@@ -89,18 +80,27 @@ router.put("/updatestate", (req, res) => {
         return;
     }
 
-    const nameValidation = validateName(nombre, 1, 50, true);
-    if (!nameValidation.valid) {
-        res.status(400).json({ error: nameValidation.error });
-        return;
+    if (nombre != undefined) {
+        const nameValidation = validateName(nombre, 1, 50, true);
+        if (!nameValidation.valid) {
+            res.status(400).json({ error: nameValidation.error });
+            return;
+        }
     }
 
-    if (orden < 0) {
-        res.status(400).json({ error: "The value 'orden' can't be negative." });
-        return;
+    const ordenQuery = orden != undefined ? ` orden = ? ` : ``;
+    const nombreQuery = nombre != undefined ? ` nombre = ? ` : ``;
+    const optionalComma = orden != undefined && nombre != undefined ? `,` : ``;
+    const params = [];
+    if (orden != undefined) {
+        params.push(orden);
     }
+    if (nombre != undefined) {
+        params.push(nombre);
+    }
+    params.push(id_estado);
 
-    dbContainer.db.execute(`UPDATE estados SET orden = ?, nombre = ? WHERE id_estado = ?`, [orden, nombre, id_estado], (err, results) => {
+    dbContainer.db.execute(`UPDATE estados SET ${ordenQuery}${optionalComma}${nombreQuery} WHERE id_estado = ?`, params, (err, results) => {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -163,9 +163,46 @@ router.post("/newregister", (req, res) => {
         if (err) {
             res.status(400).json({ error: err.message });
         } else {
-            res.status(201).json(results);
+            const id_usuario = results.insertId;
+            res.status(201).json({ id_usuario, correo, nombre, apellido });
         }
     });
 });
+
+// router.post("/newtask", (req, res) => {
+//     const nombre = req.body.nombre;
+//     const orden = req.body.orden;
+
+//     if (nombre == undefined || orden == undefined) {
+//         res.status(400).json({ error: "Missing data. Required data: nombre, orden" });
+//         return;
+//     }
+
+//     const nameValidation = validateName(nombre, 1, 50, true);
+//     if (!nameValidation.valid) {
+//         res.status(400).json({ error: nameValidation.error });
+//         return;
+//     }
+
+//     if (orden < 0) {
+//         res.status(400).json({ error: "The value 'orden' can't be negative." });
+//         return;
+//     }
+
+//     dbContainer.db.execute(`INSERT INTO estados (nombre, orden) VALUES (?, ?)`, [nombre, orden], (err, results) => {
+//         if (err) {
+//             res.status(400).json({ error: err.message });
+//             return;
+//         }
+
+//         const id_estado = results.insertId;
+
+//         res.status(201).json({
+//             id_estado,
+//             nombre,
+//             orden,
+//         });
+//     });
+// });
 
 module.exports = router;

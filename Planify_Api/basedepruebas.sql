@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS Estados (
 CREATE TABLE IF NOT EXISTS Usuarios (
   id_usuario INT AUTO_INCREMENT,
   correo VARCHAR(250) NOT NULL UNIQUE,
-  hash VARCHAR(60) NOT NULL UNIQUE,
+  hash VARCHAR(60) NOT NULL,
   nombre VARCHAR(100) NOT NULL,
   apellido VARCHAR(100) NOT NULL,
   foto_perfil TEXT,
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS Tareas (
   id_tarea INT AUTO_INCREMENT,
   nombre VARCHAR(100) NOT NULL,
   descripcion VARCHAR(250),
-  fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+  fecha_creacion DATETIME,
   fecha_limite DATETIME,
   orden INT,
   prioridad INT,
@@ -62,8 +62,8 @@ INSERT IGNORE INTO Estados (nombre, orden) VALUES ('In Process', 2);
 INSERT IGNORE INTO Estados (nombre, orden) VALUES ('Done', 3);
 
 INSERT IGNORE INTO Usuarios (correo, hash, nombre, apellido) VALUES ('usuario1@example.com', '$2b$10$nOUIs5kJ7naTuTFkBy1veuK0kSxUFXfuaOKdOKf9xYT0KKIGSJwFa', 'Juan', 'Pérez');
-INSERT IGNORE INTO Usuarios (correo, hash, nombre, apellido) VALUES ('usuario2@example.com', '$2b$10$nOUIs5kJ7naTuTFkBy1veaK0kSxUFXfuaOKdOKf9xYT0KKIGSJwFa', 'Ana', 'López');
-INSERT IGNORE INTO Usuarios (correo, hash, nombre, apellido) VALUES ('usuario3@example.com', '$2b$10$nOUIs5kJ7naTuTFkBy1veeK0kSxUFXfuaOKdOKf9xYT0KKIGSJwFa', 'Luis', 'García');
+INSERT IGNORE INTO Usuarios (correo, hash, nombre, apellido) VALUES ('usuario2@example.com', '$2b$10$nOUIs5kJ7naTuTFkBy1veuK0kSxUFXfuaOKdOKf9xYT0KKIGSJwFa', 'Ana', 'López');
+INSERT IGNORE INTO Usuarios (correo, hash, nombre, apellido) VALUES ('usuario3@example.com', '$2b$10$nOUIs5kJ7naTuTFkBy1veuK0kSxUFXfuaOKdOKf9xYT0KKIGSJwFa', 'Luis', 'García');
 
 INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado) VALUES ('Tarea 1', 'Descripción de la Tarea 1', '2024-12-31', 1);
 INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado) VALUES ('Tarea 2', 'Descripción de la Tarea 2', '2024-11-30', 2);
