@@ -104,7 +104,7 @@ Por ejemplo:
         "nombre": "Hacer algo importante",
         "orden": "3",
         "id_estado": 1,
-        "fecha_creacion": "2024-11-28T15:30:00Z"
+        "fecha_creacion": "2024-11-28 15:30:00"
     }
     ```
 

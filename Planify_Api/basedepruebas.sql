@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS Tareas (
   descripcion VARCHAR(250),
   fecha_creacion DATETIME,
   fecha_limite DATETIME,
-  orden INT,
+  orden INT NOT NULL,
   prioridad INT,
   id_estado INT,
   PRIMARY KEY (id_tarea),
@@ -65,10 +65,10 @@ INSERT IGNORE INTO Usuarios (correo, hash, nombre, apellido) VALUES ('usuario1@e
 INSERT IGNORE INTO Usuarios (correo, hash, nombre, apellido) VALUES ('usuario2@example.com', '$2b$10$nOUIs5kJ7naTuTFkBy1veuK0kSxUFXfuaOKdOKf9xYT0KKIGSJwFa', 'Ana', 'López');
 INSERT IGNORE INTO Usuarios (correo, hash, nombre, apellido) VALUES ('usuario3@example.com', '$2b$10$nOUIs5kJ7naTuTFkBy1veuK0kSxUFXfuaOKdOKf9xYT0KKIGSJwFa', 'Luis', 'García');
 
-INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado) VALUES ('Tarea 1', 'Descripción de la Tarea 1', '2024-12-31', 1);
-INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado) VALUES ('Tarea 2', 'Descripción de la Tarea 2', '2024-11-30', 2);
-INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado) VALUES ('Tarea 3', 'Descripción de la Tarea 3', '2024-10-31', 3);
-INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado) VALUES ('Tarea 4', 'Descripción de la Tarea 4', '2024-10-31', 3);
+INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado, orden) VALUES ('Tarea 1', 'Descripción de la Tarea 1', '2024-12-31', 1, 0);
+INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado, orden) VALUES ('Tarea 2', 'Descripción de la Tarea 2', '2024-11-30', 2, 1);
+INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado, orden) VALUES ('Tarea 3', 'Descripción de la Tarea 3', '2024-10-31', 3, 2);
+INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado, orden) VALUES ('Tarea 4', 'Descripción de la Tarea 4', '2024-10-31', 3, 3);
 
 INSERT IGNORE INTO Usuarios_Tareas (id_usuario, id_tarea) VALUES (1, 1);  -- Juan tiene Tarea 1
 INSERT IGNORE INTO Usuarios_Tareas (id_usuario, id_tarea) VALUES (1, 2);  -- Juan tiene Tarea 2
