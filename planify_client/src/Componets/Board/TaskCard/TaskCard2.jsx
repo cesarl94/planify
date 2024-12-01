@@ -2,11 +2,11 @@ import React, { useContext, useState } from 'react';
 import { FaStar } from 'react-icons/fa'; // Importar íconos de react-icons
 import { TaskContext } from '../../../Context/TaskContext';
 import './TaskCard.css';
+import TaskModal from '../TaskModal/TaskModal';
 
 const TaskCard2 = ({ estadoId }) => {
     const { tasks } = useContext(TaskContext);
 
-    //ESTA LO HIZO CHATGPT PERO FUNCIONO ASI QUE LO DEJO BORRAR ESTE COMENTARIO XD
     const groupedTasks = tasks
         .filter((task) => task.id_estado === estadoId) 
         .reduce((acc, task) => {
@@ -35,10 +35,24 @@ const TaskCard2 = ({ estadoId }) => {
         }));
     };
 
+    // Modal tareas
+    const [selectedTask, setSelectedTask] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleTaskClick = (task) => {
+        setSelectedTask(task);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedTask(null);
+    };
+
     return (
         <div>
             {filteredTasks.map((task) => (
-                <div className="task-card text-center p-1" key={task.id_tarea}>
+                <div className="task-card text-center p-1" key={task.id_tarea} onClick={() => handleTaskClick(task)}>
                     <p>{task.nombre}</p>
 
                     <div className="d-flex justify-content-between">
@@ -61,6 +75,15 @@ const TaskCard2 = ({ estadoId }) => {
                     </div>
                 </div>
             ))}
+            {selectedTask && (
+                <TaskModal 
+                    isOpen={isModalOpen} 
+                    onClose={closeModal} 
+                    task={selectedTask} 
+                    ratings={ratings} 
+                    handleRating={handleRating}
+                />
+            )}
         </div>
     );
 };
