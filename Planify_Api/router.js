@@ -1,7 +1,7 @@
+const { validateEmail, validateName, sortByProp } = require("../playnify_shared/utils");
+const { getMySQLDateFormat, isValidBcryptHash } = require("./apiutils");
 const express = require("express");
-const { validateEmail, validateName } = require("../playnify_shared/utils");
 const dbContainer = require("./db");
-const apiutils = require("./apiutils");
 
 const router = express.Router();
 
@@ -37,6 +37,117 @@ router.get("/estados/tareas", (req, res) => {
             res.status(200).json(results);
         }
     });
+});
+
+router.get("/board", async (httpReq, httpRes) => {
+    const estados = await new Promise((promRes, promRej) => {
+        dbContainer.db.execute(`SELECT * FROM estados`, (sqlErr, sqlRes) => {
+            if (sqlErr) {
+                promRej(sqlErr.message);
+            } else {
+                promRes(sqlRes);
+            }
+        });
+    }).catch((promErr) => {
+        httpRes.status(400).json({ error: promErr });
+        return null;
+    });
+
+    if (estados == null) {
+        return;
+    }
+
+    const tareas = await new Promise((promRes, promRej) => {
+        dbContainer.db.execute(`SELECT * FROM tareas`, (sqlErr, sqlRes) => {
+            if (sqlErr) {
+                promRej(sqlErr.message);
+            } else {
+                promRes(sqlRes);
+            }
+        });
+    }).catch((promErr) => {
+        httpRes.status(400).json({ error: promErr });
+        return null;
+    });
+
+    if (tareas == null) {
+        return;
+    }
+
+    const usuarios_tareas = await new Promise((promRes, promRej) => {
+        dbContainer.db.execute(`SELECT * FROM usuarios_tareas`, (sqlErr, sqlRes) => {
+            if (sqlErr) {
+                promRej(sqlErr.message);
+            } else {
+                promRes(sqlRes);
+            }
+        });
+    }).catch((promErr) => {
+        httpRes.status(400).json({ error: promErr });
+        return null;
+    });
+
+    if (usuarios_tareas == null) {
+        return;
+    }
+
+    const usuarios = await new Promise((promRes, promRej) => {
+        dbContainer.db.execute(`SELECT * FROM usuarios`, (sqlErr, sqlRes) => {
+            if (sqlErr) {
+                promRej(sqlErr.message);
+            } else {
+                promRes(sqlRes);
+            }
+        });
+    }).catch((promErr) => {
+        httpRes.status(400).json({ error: promErr });
+        return null;
+    });
+
+    if (usuarios == null) {
+        return;
+    }
+
+    sortByProp(estados, "orden");
+
+    const returnValue = { estados: [] };
+
+    for (let i = 0; i < estados.length; i++) {
+        const estadoSQL = estados[i];
+        const tareas_estadoSQL = sortByProp(
+            tareas.filter((task) => task.id_estado == estadoSQL.id_estado),
+            "orden"
+        );
+
+        const tareas_estado = [];
+
+        for (let j = 0; j < tareas_estadoSQL.length; j++) {
+            const tarea = tareas_estadoSQL[j];
+            const usuarios_tarea = usuarios_tareas.filter((usuario_tarea) => usuario_tarea.id_tarea == tarea.id_tarea);
+            const usuarios_filtered = usuarios.filter((usuario) => usuarios_tarea.some((usuario_tarea) => usuario_tarea.id_usuario == usuario.id_usuario));
+
+            const tareaJSON = {
+                id_tarea: tarea.id_tarea,
+                nombre: tarea.nombre,
+                prioridad: tarea.prioridad,
+                orden: tarea.orden,
+                usuarios: usuarios_filtered.map((usuario) => usuario.id_usuario),
+            };
+
+            tareas_estado.push(tareaJSON);
+        }
+
+        const estadoJSON = {
+            id_estado: estadoSQL.id_estado,
+            nombre: estadoSQL.nombre,
+            orden: estadoSQL.orden,
+            tareas: tareas_estado,
+        };
+
+        returnValue.estados.push(estadoJSON);
+    }
+
+    httpRes.status(200).json(returnValue);
 });
 
 router.post("/newstate", (req, res) => {
@@ -83,7 +194,7 @@ router.post("/newregister", (req, res) => {
         return;
     }
 
-    if (!apiutils.isValidBcryptHash(hash)) {
+    if (!isValidBcryptHash(hash)) {
         res.status(400).json({ error: `The provided password hash is not in the correct format.` });
         return;
     }
@@ -126,7 +237,7 @@ router.post("/newtask", (req, res) => {
         return;
     }
 
-    const mysqlDate = apiutils.getMySQLDateFormat(new Date());
+    const mysqlDate = getMySQLDateFormat(new Date());
 
     dbContainer.db.execute(`INSERT INTO tareas (nombre, orden, id_estado, fecha_creacion) VALUES (?, ?, ?, ?)`, [nombre, orden, id_estado, mysqlDate], (err, results) => {
         if (err) {

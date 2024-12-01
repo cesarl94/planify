@@ -105,4 +105,8 @@ function validateName(element, minLength = 3, maxLength = 50, allowedNumbers = f
     };
 }
 
-module.exports = { containsNumbers, validateEmail, validateName };
+function sortByProp(objectsArray, propName) {
+    return objectsArray.sort((a, b) => a[propName] - b[propName]);
+}
+
+module.exports = { containsNumbers, validateEmail, validateName, sortByProp };

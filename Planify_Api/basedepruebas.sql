@@ -61,9 +61,10 @@ INSERT IGNORE INTO Estados (nombre, orden) VALUES ('To Do', 1);
 INSERT IGNORE INTO Estados (nombre, orden) VALUES ('In Process', 2);
 INSERT IGNORE INTO Estados (nombre, orden) VALUES ('Done', 3);
 
-INSERT IGNORE INTO Usuarios (correo, hash, nombre, apellido) VALUES ('usuario1@example.com', '$2b$10$nOUIs5kJ7naTuTFkBy1veuK0kSxUFXfuaOKdOKf9xYT0KKIGSJwFa', 'Juan', 'Pérez');
-INSERT IGNORE INTO Usuarios (correo, hash, nombre, apellido) VALUES ('usuario2@example.com', '$2b$10$nOUIs5kJ7naTuTFkBy1veuK0kSxUFXfuaOKdOKf9xYT0KKIGSJwFa', 'Ana', 'López');
-INSERT IGNORE INTO Usuarios (correo, hash, nombre, apellido) VALUES ('usuario3@example.com', '$2b$10$nOUIs5kJ7naTuTFkBy1veuK0kSxUFXfuaOKdOKf9xYT0KKIGSJwFa', 'Luis', 'García');
+INSERT IGNORE INTO Usuarios (nombre, apellido, correo, hash) VALUES ('Juan', 'Pérez', 'juan.perez@hotmail.com', '$2b$10$nOUIs5kJ7naTuTFkBy1veuK0kSxUFXfuaOKdOKf9xYT0KKIGSJwFa');
+INSERT IGNORE INTO Usuarios (nombre, apellido, correo, hash) VALUES ('Ana', 'López', 'ana.lopez@gmail.com', '$2b$10$nOUIs5kJ7naTuTFkBy1veuK0kSxUFXfuaOKdOKf9xYT0KKIGSJwFa');
+INSERT IGNORE INTO Usuarios (nombre, apellido, correo, hash) VALUES ('Luis', 'García', 'luis.garcia@example.com', '$2b$10$nOUIs5kJ7naTuTFkBy1veuK0kSxUFXfuaOKdOKf9xYT0KKIGSJwFa');
+INSERT IGNORE INTO Usuarios (nombre, apellido, correo, hash) VALUES ('Usuario', 'Cuatro', 'usuario4@example.com', '$2b$10$nOUIs5kJ7naTuTFkBy1veuK0kSxUFXfuaOKdOKf9xYT0KKIGSJwFa');
 
 INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado, orden) VALUES ('Tarea 1', 'Descripción de la Tarea 1', '2024-12-31', 1, 0);
 INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado, orden) VALUES ('Tarea 2', 'Descripción de la Tarea 2', '2024-11-30', 2, 1);
