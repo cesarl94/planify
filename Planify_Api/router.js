@@ -1,4 +1,4 @@
-const { validateEmail, validateName, sortByProp } = require("../playnify_shared/utils");
+const { validateEmail, validateName, sortByProp, parseSecureInt } = require("../playnify_shared/utils");
 const { getMySQLDateFormat, isValidBcryptHash } = require("./apiutils");
 const express = require("express");
 const dbContainer = require("./db");
@@ -150,6 +150,31 @@ router.get("/board", async (httpReq, httpRes) => {
     httpRes.status(200).json(returnValue);
 });
 
+router.get("/task/:id", (req, res) => {
+    const tarea_id = req.params.id;
+
+    const tarea_id_integer = parseSecureInt(tarea_id);
+
+    if (isNaN(tarea_id_integer)) {
+        res.status(400).json({ error: "Provided task id is invalid" });
+        return;
+    }
+
+    dbContainer.db.execute(`SELECT * FROM tareas WHERE id_tarea = ?;`, [tarea_id_integer], (err, results) => {
+        if (err) {
+            res.status(400).json({ error: err.message });
+            return;
+        }
+
+        if (results.length == 0) {
+            res.status(400).json({ error: `There isn't any task with the id: ${tarea_id_integer}` });
+            return;
+        }
+
+        res.status(201).json(results);
+    });
+});
+
 router.post("/newstate", (req, res) => {
     const nombre = req.body.nombre;
     const orden = req.body.orden;
@@ -252,7 +277,7 @@ router.post("/newtask", (req, res) => {
             nombre,
             orden,
             id_estado,
-            mysqlDate,
+            fecha_creacion: mysqlDate,
         });
     });
 });

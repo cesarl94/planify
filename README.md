@@ -25,7 +25,7 @@ Por ejemplo:
 ## Endpoints
 
 ### GETs
-* ``api/estados``: Devuelve un arreglo de estados que representan cada columna. No se requieren parámetros. La estructura devuelta es la siguiente:
+* ``/api/estados``: Devuelve un arreglo de estados que representan cada columna. No se requieren parámetros. La estructura devuelta es la siguiente:
     ```json
     [
         {
@@ -36,7 +36,7 @@ Por ejemplo:
         // ...
     ]
     ```
-* ``api/estados/tareas``: Devuelve un arreglo de objetos que sirven para rellenar la escena principal, en la que vemos los estados, que representan las columnas, y las miniaturas de las tareas que hay en cada tarea, con los usuarios asignados. No se requieren parámetros. La estructura devuelta es la siguiente:
+* ``/api/estados/tareas``: Devuelve un arreglo de objetos que sirven para rellenar la escena principal, en la que vemos los estados, que representan las columnas, y las miniaturas de las tareas que hay en cada tarea, con los usuarios asignados. No se requieren parámetros. La estructura devuelta es la siguiente:
     ```json
     [
         {
@@ -51,7 +51,7 @@ Por ejemplo:
     ]
     ```
 
-* ``api/board``: Devuelve un objeto que sirve para mostrar todos los datos necesarios para la vista general del tablero de trabajo, en la que podremos ver, todos los estados/columnas, y una breve información sobre cada tarea en ese estado/columna para mostrar en miniatura. No se requieren parámetros. La estructura devuelva es la siguiente:
+* ``/api/board``: Devuelve un objeto que sirve para mostrar todos los datos necesarios para la vista general del tablero de trabajo, en la que podremos ver, todos los estados/columnas, y una breve información sobre cada tarea en ese estado/columna para mostrar en miniatura. No se requieren parámetros. La estructura devuelva es la siguiente:
 
     ```json
     {
@@ -86,9 +86,37 @@ Por ejemplo:
     }
     ```
 
+* ``/api/task/:id``: Devuelve los datos en detalle de una tarea específica. La petición se realiza con un parámetro id que es un entero y debe coincidir con el PK de la tarea que estamos buscando.
+
+    Por ejemplo:<br>
+    ``https://.../api/task/5``
+
+    La estructura devuelta debería ser similar a esta:
+
+    ```json
+    [
+        {
+            "id_tarea": 5,
+            "nombre": "Cambiar el diseño del popup de salida",
+            "descripcion": "Hay que repensar los colores y la distribución de los botones en el popup que aparece cuando...",
+            "fecha_creacion": "2024-12-01T19:20:02.000Z",
+            "fecha_limite": null, // Puede no existir, de hacerlo, sería en el mismo formato que la fecha de creación
+            "orden": 3,
+            "prioridad": null, // Puede no existir, sería lo mismo que 0
+            "id_estado": 1
+        }
+    ]
+    ```
+
+    > [!IMPORTANT]
+    > Los valores: **descripcion**, **fecha_limite** y **prioridad** pueden ser ``undefined``
+
+    > [!CAUTION]
+    > Si ingresamos cualquier otro valor, o el id buscado no corresponde a ninguna tarea, nos encontraremos con un error
+
 ### POSTs
 
-* ``api/newregister``: Usado para crear un nuevo usuario. La petición se debe realizar con los siguientes valores dentro del body:
+* ``/api/newregister``: Usado para crear un nuevo usuario. La petición se debe realizar con los siguientes valores dentro del body:
     * ``correo``: Debe ser un string con el formato ``a@a.a`` de hasta 250 caracteres de largo.
     * ``nombre``: Debe ser un string que contenga entre 3 y 100 caracteres y que no contenga números.
     * ``apellido``: Debe ser un string que contenga entre 3 y 100 caracteres y que no contenga números.
@@ -115,7 +143,7 @@ Por ejemplo:
         "apellido": "Perez"
     }
     ```
-* ``api/newstate``: Usado para crear un nuevo estado para las tareas, lo cual se representa por medio de columnas. La petición se debe realizar con los siguientes valores dentro del body:
+* ``/api/newstate``: Usado para crear un nuevo estado para las tareas, lo cual se representa por medio de columnas. La petición se debe realizar con los siguientes valores dentro del body:
     * ``nombre``: El nombre del estado/columna, debe ser un string de al menos 1 y hasta 50 caracteres de largo. Pueden ser números.
     * ``orden``: Un entero que nos servirá para elegir la ubicación de la columna en el tablero. Las columnas deberán ser ordenadas moviendo a la derecha las que tengan los números mas altos.
 
@@ -127,7 +155,7 @@ Por ejemplo:
         "orden": "5"
     }
     ```
-* ``api/newtask``: Usado para crear una nueva tarea. La petición se debe realizar con los siguientes valores dentro del body:
+* ``/api/newtask``: Usado para crear una nueva tarea. La petición se debe realizar con los siguientes valores dentro del body:
     * ``nombre``: El título de la tarea, debe ser un string de al menos 1 y hasta 100 caracteres de largo. Pueden ser números.
     * ``orden``: Un entero que nos servirá para elegir la ubicación de la tarea en la columna. Las tareas deberán ser ordenadas moviendo abajo a las que tengan los números mas altos.
     * ``id_estado``: Una clave foránea (FK) que representa el id del estado en la tabla estados.
@@ -145,7 +173,7 @@ Por ejemplo:
 
 ### PUTs
 
-* ``api/updatestate``: Usado para modificar un estado/columna. La petición se debe realizar con los valores detallados a continuación dentro del body. Cabe destacar que hay parámetros opcionales, pero la petición debe tener al menos uno de los parámetros opcionales:
+* ``/api/updatestate``: Usado para modificar un estado/columna. La petición se debe realizar con los valores detallados a continuación dentro del body. Cabe destacar que hay parámetros opcionales, pero la petición debe tener al menos uno de los parámetros opcionales:
     * ``id_estado``: Un entero que representa la PK del estado/columna a modificar.
     * ``nombre`` (opcional): El nombre del estado/columna, debe ser un string de al menos 1 y hasta 50 caracteres de largo. Pueden ser números.
     * ``orden`` (opcional): Un entero que nos servirá para elegir la ubicación de la columna en el tablero. Las columnas deberán ser ordenadas moviendo a la derecha las que tengan los números mas altos. 

@@ -109,4 +109,12 @@ function sortByProp(objectsArray, propName) {
     return objectsArray.sort((a, b) => a[propName] - b[propName]);
 }
 
-module.exports = { containsNumbers, validateEmail, validateName, sortByProp };
+function parseSecureInt(input) {
+    // It checks if input is a string that contains only digits
+    if (/^-?\d+$/.test(input)) {
+        return parseInt(input, 10); // It transforms the string in an integer
+    }
+    return NaN; // If isn't valid, it returns NaN
+}
+
+module.exports = { containsNumbers, validateEmail, validateName, sortByProp, parseSecureInt };
