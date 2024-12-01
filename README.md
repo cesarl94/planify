@@ -51,6 +51,41 @@ Por ejemplo:
     ]
     ```
 
+* ``api/board``: Devuelve un objeto que sirve para mostrar todos los datos necesarios para la vista general del tablero de trabajo, en la que podremos ver, todos los estados/columnas, y una breve información sobre cada tarea en ese estado/columna para mostrar en miniatura. No se requieren parámetros. La estructura devuelva es la siguiente:
+
+    ```json
+    {
+        "estados": [
+            {
+                "id_estado": 1,
+                "nombre": "Backlog",
+                "orden": 0,
+                "tareas": [
+                    {
+                        "id_tarea": 1,
+                        "nombre": "Tarea 1",
+                        "prioridad": null,
+                        "orden": 0,
+                        "usuarios": [
+                            1,
+                            3
+                        ]
+                    },
+                    {
+                        "id_tarea": 2,
+                        //...
+                    }
+                ]
+            },
+            {
+                "id_estado": 2,
+                //...
+            },
+            //...
+        ]
+    }
+    ```
+
 ### POSTs
 
 * ``api/newregister``: Usado para crear un nuevo usuario. La petición se debe realizar con los siguientes valores dentro del body:

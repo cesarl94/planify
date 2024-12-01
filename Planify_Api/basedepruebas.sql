@@ -67,8 +67,8 @@ INSERT IGNORE INTO Usuarios (nombre, apellido, correo, hash) VALUES ('Luis', 'Ga
 INSERT IGNORE INTO Usuarios (nombre, apellido, correo, hash) VALUES ('Usuario', 'Cuatro', 'usuario4@example.com', '$2b$10$nOUIs5kJ7naTuTFkBy1veuK0kSxUFXfuaOKdOKf9xYT0KKIGSJwFa');
 
 INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado, orden) VALUES ('Tarea 1', 'Descripción de la Tarea 1', '2024-12-31', 1, 0);
-INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado, orden) VALUES ('Tarea 2', 'Descripción de la Tarea 2', '2024-11-30', 2, 1);
-INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado, orden) VALUES ('Tarea 3', 'Descripción de la Tarea 3', '2024-10-31', 3, 2);
+INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado, orden) VALUES ('Tarea 2', 'Descripción de la Tarea 2', '2024-11-30', 1, 1);
+INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado, orden) VALUES ('Tarea 3', 'Descripción de la Tarea 3', '2024-10-31', 2, 2);
 INSERT IGNORE INTO Tareas (nombre, descripcion, fecha_limite, id_estado, orden) VALUES ('Tarea 4', 'Descripción de la Tarea 4', '2024-10-31', 3, 3);
 
 INSERT IGNORE INTO Usuarios_Tareas (id_usuario, id_tarea) VALUES (1, 1);  -- Juan tiene Tarea 1
