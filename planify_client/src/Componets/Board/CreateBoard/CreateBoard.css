@@ -21,3 +21,8 @@
     height: auto;
     width: 50px; 
 }
+
+.createBoardButtom{
+    background-color: #475B63;
+    border-style: none;
+}
