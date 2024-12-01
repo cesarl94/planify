@@ -171,7 +171,7 @@ router.get("/task/:id", (req, res) => {
             return;
         }
 
-        res.status(201).json(results);
+        res.status(201).json(results[0]);
     });
 });
 

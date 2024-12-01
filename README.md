@@ -94,25 +94,23 @@ Por ejemplo:
     La estructura devuelta debería ser similar a esta:
 
     ```json
-    [
-        {
-            "id_tarea": 5,
-            "nombre": "Cambiar el diseño del popup de salida",
-            "descripcion": "Hay que repensar los colores y la distribución de los botones en el popup que aparece cuando...",
-            "fecha_creacion": "2024-12-01T19:20:02.000Z",
-            "fecha_limite": null, // Puede no existir, de hacerlo, sería en el mismo formato que la fecha de creación
-            "orden": 3,
-            "prioridad": null, // Puede no existir, sería lo mismo que 0
-            "id_estado": 1
-        }
-    ]
+    {
+        "id_tarea": 5,
+        "nombre": "Cambiar el diseño del popup de salida",
+        "descripcion": "Hay que repensar los colores y la distribución de los botones en el popup que aparece cuando...",
+        "fecha_creacion": "2024-12-01T19:20:02.000Z",
+        "fecha_limite": null, // Puede no existir, de hacerlo, sería en el mismo formato que la fecha de creación
+        "orden": 3,
+        "prioridad": null, // Puede no existir, sería lo mismo que 0
+        "id_estado": 1
+    }
     ```
 
-    > [!IMPORTANT]
-    > Los valores: **descripcion**, **fecha_limite** y **prioridad** pueden ser ``undefined``
+> [!IMPORTANT]
+> Los valores: **descripcion**, **fecha_limite** y **prioridad** pueden ser ``undefined``
 
-    > [!CAUTION]
-    > Si ingresamos cualquier otro valor, o el id buscado no corresponde a ninguna tarea, nos encontraremos con un error
+> [!CAUTION]
+> Si ingresamos cualquier otro valor, o el id buscado no corresponde a ninguna tarea, nos encontraremos con un error
 
 ### POSTs
 
