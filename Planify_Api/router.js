@@ -156,11 +156,11 @@ router.get("/task/:id", (req, res) => {
     const tarea_id_integer = parseSecureInt(tarea_id);
 
     if (isNaN(tarea_id_integer)) {
-        res.status(400).json({ error: "Provided task id is invalid" });
+        res.status(400).json({ error: "Provided task_id is invalid" });
         return;
     }
 
-    dbContainer.db.execute(`SELECT * FROM tareas WHERE id_tarea = ?;`, [tarea_id_integer], (err, results) => {
+    dbContainer.db.execute(`SELECT * FROM tareas WHERE id_tarea = ?`, [tarea_id_integer], (err, results) => {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -168,6 +168,42 @@ router.get("/task/:id", (req, res) => {
 
         if (results.length == 0) {
             res.status(400).json({ error: `There isn't any task with the id: ${tarea_id_integer}` });
+            return;
+        }
+
+        res.status(201).json(results[0]);
+    });
+});
+
+router.get("/users", (req, res) => {
+    const query = "SELECT id_usuario, nombre, apellido, foto_perfil FROM usuarios";
+    dbContainer.db.execute(query, (err, results) => {
+        if (err) {
+            res.status(400).json({ error: err.message });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+router.get("/user/:id", (req, res) => {
+    const user_id = req.params.id;
+
+    const user_id_integer = parseSecureInt(user_id);
+
+    if (isNaN(user_id_integer)) {
+        res.status(400).json({ error: "Provided user_id is invalid" });
+        return;
+    }
+
+    dbContainer.db.execute(`SELECT id_usuario, nombre, apellido, foto_perfil FROM usuarios WHERE id_usuario = ?`, [user_id_integer], (err, results) => {
+        if (err) {
+            res.status(400).json({ error: err.message });
+            return;
+        }
+
+        if (results.length == 0) {
+            res.status(400).json({ error: `There isn't any user with the id: ${user_id_integer}` });
             return;
         }
 

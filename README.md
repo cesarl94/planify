@@ -107,10 +107,52 @@ Por ejemplo:
     ```
 
 > [!IMPORTANT]
-> Los valores: **descripcion**, **fecha_limite** y **prioridad** pueden ser ``undefined``
+> Los valores: **descripcion**, **fecha_limite** y **prioridad** pueden ser ``null`` o ``undefined``
 
 > [!CAUTION]
 > Si ingresamos cualquier otro valor, o el id buscado no corresponde a ninguna tarea, nos encontraremos con un error
+
+* ``/api/users``: Usado para obtener un listado con datos públicos de todos los usuarios. No se requieren parámetros. La estructura devuelta es la siguiente:
+
+    ```json
+    [
+        {
+            "id_usuario": 1,
+            "nombre": "Juan",
+            "apellido": "Pérez",
+            "foto_perfil": null
+        },
+        {
+            "id_usuario": 2,
+            //...
+        },
+        //...
+    ]
+    ```
+> [!IMPORTANT]
+> El valor: **foto_perfil** puede ser ``null`` o ``undefined``
+
+* ``/api/user/:id``: Devuelve los datos públicos de un usuario específica. La petición se realiza con un parámetro id que es un entero y debe coincidir con el PK del usuario que estamos buscando.
+
+    Por ejemplo:<br>
+    ``https://.../api/user/3``
+
+    La estructura devuelta debería ser similar a esta:
+
+    ```json
+    {
+        "id_usuario": 3,
+        "nombre": "Luis",
+        "apellido": "García",
+        "foto_perfil": null
+    }
+    ```
+
+> [!IMPORTANT]
+> El valor: **foto_perfil** puede ser ``null`` o ``undefined``
+
+> [!CAUTION]
+> Si ingresamos cualquier otro valor, o el id buscado no corresponde a ningún usuario, nos encontraremos con un error
 
 ### POSTs
 
