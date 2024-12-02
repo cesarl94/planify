@@ -10,7 +10,6 @@ const CardStatusProvider = ({ children }) => {
         try {
           const response = await fetch('http://localhost:4000/api/estados');
           const data = await response.json();
-          const stateTitles = data.map(item => item.Nombre);
           // alert(JSON.stringify(data));
           setTitles(data);
         } catch (error) {

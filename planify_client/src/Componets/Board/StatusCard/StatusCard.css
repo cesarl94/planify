@@ -60,3 +60,11 @@
     background: #BACDB0; 
 }
 
+
+
+.btn-CreateTask {
+    background-color: #729B79;
+    border-radius: 10px; 
+    border: 1px solid #4F6F52; /* Borde fino con color oscuro */
+
+}
