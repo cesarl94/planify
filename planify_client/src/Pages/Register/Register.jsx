@@ -11,12 +11,13 @@ const Register = () => {
   const [Error, SetError] = useState(false)
   const [Confirm, SetConfirm] = useState(false)
   const [User, SetUser] = useState('')
+  const [Apellido, Setapelldio] = useState('')
   const [Email, SetEmail] = useState('')
   const [Password1, SetPassword1] = useState('')
   const [Password2, SetPassword2] = useState('')
   const [ShowPassword, SetShowPassword] = useState(false); // Estado para controlar si la contraseña se muestra como texto o como puntos (password).
 
-  const HandleValidateRegister = () => {
+  const HandleValidateRegister = async () => {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex que valida que el email tenga el formato correcto, con un '@' y un dominio válido.
 
@@ -33,6 +34,25 @@ const Register = () => {
     } else {
       SetError(false);
       SetConfirm(true);
+      
+      // const hash = await bcrypt.hash(Password1, 10);
+
+
+      const data = { correo: Email, password: Password1, nombre: User, apellido: Apellido }
+
+      try {
+        const response = await fetch('http://localhost:4000/api/newregister', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+
+      } catch (error) {
+        console.error('Error al crear usuario', error);
+
+      }
       // Si todas las validaciones pasan, se muestra confirmación de registro.
     }
 
@@ -49,10 +69,18 @@ const Register = () => {
           <div className="d-flex justify-content-center">
             <div className="col-10 col-sm-8">
               <div>
-                <input type='text' placeholder='Enter your full name' className='col-12 border rounded-2 my-2' onChange={(event) => { SetUser(event.target.value) }}></input>
+                <input type='text' placeholder='Enter your name' className='col-12 border rounded-2 my-2' onChange={(event) => { SetUser(event.target.value) }}></input>
                 {Error && (!User.trim() || !/^[a-zA-Z\s]+$/.test(User)) && (  // Muestra un mensaje de error si el nombre está vacío o no cumple con la regex.
-                  <p className='text-danger m-0 text-start'>Full name must only contain letters and spaces.</p>
+                  <p className='text-danger m-0 text-start'>The name must only contain letters and spaces.</p>
                 )}
+
+
+                <input type='text' placeholder='Enter your last name' className='col-12 border rounded-2 my-2' onChange={(event) => { Setapelldio(event.target.value) }}></input>
+
+                {Error && (!Apellido.trim() || !/^[a-zA-Z\s]+$/.test(User)) && (  
+                  <p className='text-danger m-0 text-start'>The last name must only contain letters and spaces.</p>
+                )}
+
 
                 <input type='email' placeholder='Enter your email' className='col-12 border rounded-2 my-2' onChange={(event) => { SetEmail(event.target.value) }}></input>
                 {Error && (!Email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(Email)) && ( // Muestra un mensaje de error si el email está vacío o no tiene formato válido.
