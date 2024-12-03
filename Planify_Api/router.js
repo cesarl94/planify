@@ -368,7 +368,7 @@ router.post("/newtask", (req, res) => {
     });
 });
 
-router.put("/updatestate", (req, res) => {
+router.patch("/updatestate", (req, res) => {
     const id_estado = req.body.id_estado;
     const orden = req.body.orden;
     const nombre = req.body.nombre;
@@ -423,7 +423,7 @@ router.put("/updatestate", (req, res) => {
     });
 });
 
-router.put("/updatetask", async (req, res) => {
+router.patch("/updatetask", async (req, res) => {
     const id_tarea = req.body.id_tarea;
 
     const nombre = req.body.nombre;
