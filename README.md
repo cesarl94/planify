@@ -100,7 +100,7 @@ Por ejemplo:
     {
         "id_tarea": 5,
         "nombre": "Cambiar el diseño del popup de salida",
-        "descripcion": "Hay que repensar los colores y la distribución de los botones en el popup que aparece cuando...", // Puede no existir
+        "descripcion": "Hay que repensar los colores y la distribución de los botones en el popup que aparece cuando...", // Puede no existir esta propiedad
         "fecha_creacion": "2024-12-01T19:20:02.000Z",
         "fecha_limite": null, // Puede no existir, de hacerlo, sería en el mismo formato que la fecha de creación
         "orden": 3,
@@ -206,7 +206,7 @@ Por ejemplo:
     }
     ```
 
-### PUTs
+### PATCHs
 
 * ``/api/updatestate``: Usado para modificar un estado/columna. La petición se debe realizar con los valores detallados a continuación dentro del body. Cabe destacar que hay parámetros opcionales, pero la petición debe tener al menos uno de los parámetros opcionales:
     * ``id_estado``: Un entero que representa la PK del estado/columna a modificar.
@@ -231,7 +231,7 @@ Por ejemplo:
     {
         "id_tarea": 5,
         "nombre": "Cambiar el diseño del popup de salida",
-        "descripcion": "Hay que repensar los colores y la distribución de los botones en el popup que aparece cuando...", // Puede no existir
+        "descripcion": "Hay que repensar los colores y la distribución de los botones en el popup que aparece cuando...", // Puede no existir esta propiedad
         "fecha_creacion": "2024-12-01T19:20:02.000Z",
         "fecha_limite": null, // Puede no existir, de hacerlo, sería en el mismo formato que la fecha de creación
         "orden": 3,
@@ -244,6 +244,20 @@ Por ejemplo:
     }
     ```
 
+### DELETEs
+
+* ``/api/task/:id``: Usado para eliminar una tarea en particular. La petición se realiza con un parámetro id que es un entero y debe coincidir con el PK de la tarea que estamos eliminando.
+
+En el proceso, podemos obtener o un estado de error 40X con la explicación correspondiente, si es que algo salió mal, o un estado 200 si la eliminación fue un éxito.
+
+La estructura devuelta puede ser similar a esta:
+
+```json
+{
+    "error": "There isn't any task with the id: 1", // Opcional
+    "message": "Resource sucessfully deleted" // Opcional
+}
+```
 
 ---
 TODO:<br>
