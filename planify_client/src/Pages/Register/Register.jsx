@@ -34,9 +34,6 @@ const Register = () => {
     } else {
       SetError(false);
       SetConfirm(true);
-      
-      // const hash = await bcrypt.hash(Password1, 10);
-
 
       const data = { correo: Email, password: Password1, nombre: User, apellido: Apellido }
 
