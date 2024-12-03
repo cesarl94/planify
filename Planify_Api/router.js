@@ -150,7 +150,7 @@ router.get("/board", async (httpReq, httpRes) => {
     httpRes.status(200).json(returnValue);
 });
 
-router.get("/task/:id", (req, res) => {
+router.get("/task/:id", async (req, res) => {
     const tarea_id = req.params.id;
 
     const tarea_id_integer = parseSecureInt(tarea_id);
@@ -160,19 +160,49 @@ router.get("/task/:id", (req, res) => {
         return;
     }
 
-    dbContainer.db.execute(`SELECT * FROM tareas WHERE id_tarea = ?`, [tarea_id_integer], (err, results) => {
-        if (err) {
-            res.status(400).json({ error: err.message });
-            return;
-        }
+    const task = await new Promise((promRes, promRej) => {
+        dbContainer.db.execute(`SELECT * FROM tareas WHERE id_tarea = ?`, [tarea_id_integer], (sqlErr, sqlRes) => {
+            if (sqlErr) {
+                promRej(sqlErr.message);
+                return;
+            }
 
-        if (results.length == 0) {
-            res.status(400).json({ error: `There isn't any task with the id: ${tarea_id_integer}` });
-            return;
-        }
+            if (sqlRes.length == 0) {
+                promRej(`There isn't any task with the id: ${tarea_id_integer}`);
+                return;
+            }
 
-        res.status(201).json(results[0]);
+            promRes(sqlRes[0]);
+        });
+    }).catch((promErr) => {
+        res.status(400).json({ error: promErr });
+        return null;
     });
+
+    if (task == null) {
+        return;
+    }
+
+    const task_users_ids = await new Promise((promRes, promRej) => {
+        dbContainer.db.execute(`SELECT id_usuario FROM usuarios_tareas WHERE id_tarea = ?`, [tarea_id_integer], (sqlErr, sqlRes) => {
+            if (sqlErr) {
+                promRej(sqlErr.message);
+                return;
+            }
+
+            promRes(sqlRes.map((userStruct) => userStruct.id_usuario));
+        });
+    }).catch((promErr) => {
+        res.status(400).json({ error: promErr });
+        return null;
+    });
+
+    if (task_users_ids == null) {
+        return;
+    }
+
+    task.usuarios = task_users_ids;
+    res.status(200).json(task);
 });
 
 router.get("/users", (req, res) => {
@@ -207,7 +237,7 @@ router.get("/user/:id", (req, res) => {
             return;
         }
 
-        res.status(201).json(results[0]);
+        res.status(200).json(results[0]);
     });
 });
 
@@ -360,7 +390,7 @@ router.put("/updatestate", (req, res) => {
         }
 
         // It verifies if no one row was updated
-        if (results.affectedRows === 0) {
+        if (results.affectedRows == 0) {
             res.status(400).json({ error: "Provided value 'id_estado' isn't in our data base." });
             return;
         }
@@ -371,6 +401,207 @@ router.put("/updatestate", (req, res) => {
             orden,
         });
     });
+});
+
+router.put("/updatetask", async (req, res) => {
+    const id_tarea = req.body.id_tarea;
+
+    const nombre = req.body.nombre;
+    const descripcion = req.body.descripcion;
+    const fecha_limite = req.body.fecha_limite;
+    const orden = req.body.orden;
+    const prioridad = req.body.prioridad;
+    const id_estado = req.body.id_estado;
+    const usuarios = req.body.usuarios;
+
+    if (
+        id_tarea == undefined ||
+        (nombre == undefined && descripcion == undefined && fecha_limite == undefined && orden == undefined && prioridad == undefined && id_estado == undefined && usuarios == undefined)
+    ) {
+        res.status(400).json({ error: "Missing data. Required data: id_tarea && (nombre || descripcion || fecha_limite || orden || prioridad || id_estado || usuarios)" });
+        return;
+    }
+
+    const saved_task = await new Promise((promRes, promRej) => {
+        dbContainer.db.execute(`SELECT * FROM tareas WHERE id_tarea = ?`, [id_tarea], (sqlErr, sqlRes) => {
+            if (sqlErr) {
+                promRej(sqlErr.message);
+                return;
+            }
+
+            // It verifies if no one task were found
+            if (sqlRes.length == 0) {
+                promRej("Provided value 'id_tarea' isn't in our data base.");
+                return;
+            }
+
+            promRes(sqlRes[0]);
+        });
+    }).catch((promErr) => {
+        res.status(400).json({ error: promErr });
+        return null;
+    });
+
+    if (saved_task == null) {
+        return;
+    }
+
+    const new_task_values = {};
+    if (nombre != undefined) {
+        const nameValidation = validateName(nombre, 1, 100, true);
+        if (!nameValidation.valid) {
+            res.status(400).json({ error: nameValidation.error });
+            return;
+        }
+
+        new_task_values.nombre = nombre;
+    }
+    if (descripcion != undefined) {
+        const descripcionValidation = validateName(descripcion, 0, 250, true);
+        if (!descripcionValidation.valid) {
+            res.status(400).json({ error: descripcionValidation.error });
+            return;
+        }
+
+        new_task_values.descripcion = descripcion;
+    }
+    if (fecha_limite != undefined) {
+        new_task_values.fecha_limite = getMySQLDateFormat(fecha_limite);
+    }
+    if (orden != undefined) {
+        new_task_values.orden = orden;
+    }
+    if (prioridad != undefined) {
+        if (prioridad < 0 || prioridad > 5) {
+            res.status(400).json({ error: "Value 'prioridad' must be between 0 and 5" });
+            return;
+        }
+        new_task_values.prioridad = prioridad;
+    }
+    if (id_estado != undefined) {
+        new_task_values.id_estado = id_estado;
+    }
+
+    const keys = Object.keys(new_task_values);
+    if (keys.length > 0) {
+        let keysString = "";
+        const params = [];
+
+        for (let i = 0; i < keys.length; i++) {
+            const key = keys[i];
+            const value = new_task_values[key];
+
+            keysString += ` ${key} = ? `;
+            if (i != keys.length - 1) {
+                keysString += " , ";
+            }
+
+            params.push(value);
+        }
+        params.push(id_tarea);
+
+        const sql_response = await new Promise((promRes, promRej) => {
+            dbContainer.db.execute(`UPDATE tareas SET ${keysString} WHERE id_tarea = ?`, params, (sqlErr, sqlRes) => {
+                if (sqlErr) {
+                    promRej(sqlErr.message);
+                    return;
+                }
+
+                promRes(sqlRes);
+            });
+        }).catch((promErr) => {
+            res.status(400).json({ error: promErr });
+            return null;
+        });
+
+        if (sql_response == null) {
+            return;
+        }
+    }
+
+    const task_users_ids = await new Promise((promRes, promRej) => {
+        dbContainer.db.execute(`SELECT id_usuario FROM usuarios_tareas WHERE id_tarea = ?`, [id_tarea], (sqlErr, sqlRes) => {
+            if (sqlErr) {
+                promRej(sqlErr.message);
+                return;
+            }
+
+            promRes(sqlRes.map((userStruct) => userStruct.id_usuario));
+        });
+    }).catch((promErr) => {
+        res.status(400).json({ error: promErr });
+        return null;
+    });
+
+    if (task_users_ids == null) {
+        return;
+    }
+
+    if (usuarios == undefined) {
+        Object.assign(saved_task, new_task_values);
+        saved_task.usuarios = task_users_ids;
+        res.status(200).json(saved_task);
+        return;
+    }
+
+    const usersToDelete = task_users_ids.filter((task_user_id) => !usuarios.some((usuario) => usuario == task_user_id));
+    const usersToCreate = usuarios.filter((usuario) => !task_users_ids.some((task_user_id) => task_user_id == usuario));
+
+    // Inserción de usuarios
+    if (usersToCreate.length > 0) {
+        const insertQuery = `
+            INSERT INTO Usuarios_Tareas (id_usuario, id_tarea) 
+            VALUES ${usersToCreate.map(() => "(?, ?)").join(" , ")}
+        `;
+        const insertParams = usersToCreate.flatMap((usuario) => [usuario, id_tarea]);
+
+        const insertResponse = await new Promise((promRes, promRej) => {
+            dbContainer.db.execute(insertQuery, insertParams, (sqlErr, sqlRes) => {
+                if (sqlErr) {
+                    promRej(sqlErr.message);
+                    return;
+                }
+                promRes(sqlRes);
+            });
+        }).catch((promErr) => {
+            res.status(400).json({ error: promErr });
+            return null;
+        });
+
+        if (insertResponse == null) {
+            return;
+        }
+    }
+
+    // Eliminación de usuarios
+    if (usersToDelete.length > 0) {
+        const deleteQuery = `
+            DELETE FROM Usuarios_Tareas
+            WHERE id_tarea = ? AND id_usuario IN (${usersToDelete.map(() => "?").join(" , ")})
+        `;
+        const deleteParams = [id_tarea, ...usersToDelete];
+
+        const deleteResponse = await new Promise((promRes, promRej) => {
+            dbContainer.db.execute(deleteQuery, deleteParams, (sqlErr, sqlRes) => {
+                if (sqlErr) {
+                    promRej(sqlErr.message);
+                    return;
+                }
+                promRes(sqlRes);
+            });
+        }).catch((promErr) => {
+            res.status(400).json({ error: promErr });
+            return null;
+        });
+
+        if (deleteResponse == null) {
+            return;
+        }
+    }
+
+    Object.assign(saved_task, new_task_values);
+    saved_task.usuarios = usuarios;
+    res.status(200).json(saved_task);
 });
 
 module.exports = router;

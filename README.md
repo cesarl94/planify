@@ -86,6 +86,9 @@ Por ejemplo:
     }
     ```
 
+> [!IMPORTANT]
+> El valor: **prioridad** de las tareas puede ser ``null`` o ``undefined``, esto significaría lo mismo que prioridad 0 (o, en otras palabras, sin ninguna estrellita)
+
 * ``/api/task/:id``: Devuelve los datos en detalle de una tarea específica. La petición se realiza con un parámetro id que es un entero y debe coincidir con el PK de la tarea que estamos buscando.
 
     Por ejemplo:<br>
@@ -97,12 +100,16 @@ Por ejemplo:
     {
         "id_tarea": 5,
         "nombre": "Cambiar el diseño del popup de salida",
-        "descripcion": "Hay que repensar los colores y la distribución de los botones en el popup que aparece cuando...",
+        "descripcion": "Hay que repensar los colores y la distribución de los botones en el popup que aparece cuando...", // Puede no existir
         "fecha_creacion": "2024-12-01T19:20:02.000Z",
         "fecha_limite": null, // Puede no existir, de hacerlo, sería en el mismo formato que la fecha de creación
         "orden": 3,
         "prioridad": null, // Puede no existir, sería lo mismo que 0
-        "id_estado": 1
+        "id_estado": 1,
+        "usuarios": [ // Puede ser un arreglo vacío
+            1,
+            3
+        ]
     }
     ```
 
@@ -218,7 +225,36 @@ Por ejemplo:
     * ``nombre`` (opcional): El nombre del estado/columna, debe ser un string de al menos 1 y hasta 50 caracteres de largo. Pueden ser números.
     * ``orden`` (opcional): Un entero que nos servirá para elegir la ubicación de la columna en el tablero. Las columnas deberán ser ordenadas moviendo a la derecha las que tengan los números mas altos. 
 
-    Con esos parámetros modificaremos un estado/columna. En el proceso, podemos obtener o un estado de error 400 con explicación correspondiente, si es que algo salió mal, o un estado 201 si todo salió bien. Y la estructura devuelta sería igual a la estructura proporcionada.
+    Con esos parámetros modificaremos un estado/columna. En el proceso, podemos obtener o un estado de error 400 con explicación correspondiente, si es que algo salió mal, o un estado 200 si todo salió bien. Y la estructura devuelta sería igual a la estructura proporcionada.
+
+* ``/api/updatetask``: Usado para modificar una tarea. La petición se debe realizar con los valores detallados a continuación dentro del body. Cabe destacar que hay parámetros opcionales, pero la petición debe tener al menos uno de los parámetros opcionales:
+    * ``id_tarea``: Un entero que representa la PK de la tarea a modificar.
+    * ``nombre`` (opcional): El título de la tarea, debe ser un string de al menos 1 y hasta 100 caracteres de largo. Pueden ser números.
+    * ``descripcion`` (opcional): La descripción de la tarea a realizar. Debe ser un string de hasta 250 caracteres de largo. Pueden ser números.
+    * ``fecha_limite`` (opcional): La fecha límite de la tarea a realizar. Debe ser un objeto de tipo Date.
+    * ``orden`` (opcional): Un entero que nos servirá para elegir la ubicación de la tarea en la columna. Las tareas deberán ser ordenadas moviendo abajo a las que tengan los números mas altos.
+    * ``prioridad`` (opcional): Un entero que nos servirá para elegir el nivel de prioridad de esta tarea. Basicamente, es la cantidad de estrellitas en una tarea. Siendo 5 el máximo valor y 0 el mínimo.
+    * ``id_estado`` (opcional): Una clave foránea (FK) que representa el id del estado en la tabla estados.
+    * ``usuarios`` (opcional): Un arreglo de enteros que representa el id de los usuarios asignados a la tarea. Son FKs. La llamada al endpoint interpretará estos enteros y hará las modificaciones necesarias en la tabla usuarios_tareas para crear o eliminar las relaciones entre tareas y usuarios. Así que los enteros proporcionados deben ser FKs válidas.
+
+    Con esos parámetros modificaremos una tarea. En el proceso, podemos obtener o un estado de error 400 con explicación correspondiente, si es que algo salió mal, o un estado 200 si todo salió bien. Y la estructura devuelta sería igual a la estructura devuelta al pedir esa tarea. Por ejemplo:
+
+    ```json
+    {
+        "id_tarea": 5,
+        "nombre": "Cambiar el diseño del popup de salida",
+        "descripcion": "Hay que repensar los colores y la distribución de los botones en el popup que aparece cuando...", // Puede no existir
+        "fecha_creacion": "2024-12-01T19:20:02.000Z",
+        "fecha_limite": null, // Puede no existir, de hacerlo, sería en el mismo formato que la fecha de creación
+        "orden": 3,
+        "prioridad": null, // Puede no existir, sería lo mismo que 0
+        "id_estado": 1,
+        "usuarios": [ // Puede ser un arreglo vacío
+            1,
+            3
+        ]
+    }
+    ```
 
 
 ---

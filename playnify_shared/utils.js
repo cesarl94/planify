@@ -79,25 +79,20 @@ function validateEmail(email) {
 
 // Verify that a text field does not contain numbers and has at least 3 characters
 function validateName(element, minLength = 3, maxLength = 50, allowedNumbers = false) {
-    if (element === "") {
+    if (!allowedNumbers && containsNumbers(element)) {
         return {
             valid: false,
-            error: "The field cannot be empty",
-        };
-    } else if (!allowedNumbers && containsNumbers(element)) {
-        return {
-            valid: false,
-            error: "The field must not contain numbers",
+            error: `Field ${element} must not contain numbers`,
         };
     } else if (element.length < minLength) {
         return {
             valid: false,
-            error: `The field must have at least ${minLength} characters`,
+            error: `Field ${element} must have at least ${minLength} characters`,
         };
     } else if (element.length > maxLength) {
         return {
             valid: false,
-            error: "The input value is too long",
+            error: `Field ${element} value is too long`,
         };
     }
     return {
