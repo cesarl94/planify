@@ -167,20 +167,8 @@ Por ejemplo:
     * ``correo``: Debe ser un string con el formato ``a@a.a`` de hasta 250 caracteres de largo.
     * ``nombre``: Debe ser un string que contenga entre 3 y 100 caracteres y que no contenga números.
     * ``apellido``: Debe ser un string que contenga entre 3 y 100 caracteres y que no contenga números.
-    * ``hash``: Debe ser un string que representa el password encriptado del usuario. El password ingresado debe pasar por el encriptador [``bcrypt``](https://www.npmjs.com/package/bcrypt) con el valor saltRounds en 10. Ejemplo de cómo obtenerlo:
-        ```js
-        // Generador de hash
-        const saltRounds = 10; // Ajustar según el nivel de seguridad deseado
-        bcrypt.hash(`userPassword`, saltRounds, (err, hash) => {
-            if (err) {
-                console.error(`Error al generar el hash:`, err);
-            } else {
-                console.log(`Hash generado:\n${hash}`);
-                // Hash generado:
-                // $2b$10$aXmeD65jXJfqwkkAIKzU2uaAvQiLzaISGpKeT22RCN7D7pi6.5nwi
-            }
-        });
-        ```
+    * ``password``: Debe ser un string que tenga al menos 8 caracteres.
+
     Con esos parámetros crearemos un nuevo usuario. En el proceso, podemos obtener o un estado de error 400 con explicación correspondiente, si es que algo salió mal, o un estado 201 si todo salió bien. Y la estructura devuelta sería la siguiente:
     ```json
     {

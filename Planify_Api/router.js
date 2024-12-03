@@ -1,6 +1,7 @@
 const { validateEmail, validateName, sortByProp, parseSecureInt } = require("../playnify_shared/utils");
 const { getMySQLDateFormat, isValidBcryptHash } = require("./apiutils");
 const express = require("express");
+const bcrypt = require("bcrypt");
 const dbContainer = require("./db");
 
 const router = express.Router();
@@ -268,14 +269,14 @@ router.post("/newstate", (req, res) => {
     });
 });
 
-router.post("/newregister", (req, res) => {
+router.post("/newregister", async (req, res) => {
     const correo = req.body.correo;
-    const hash = req.body.hash;
+    const password = req.body.password;
     const nombre = req.body.nombre;
     const apellido = req.body.apellido;
 
-    if (correo == undefined || hash == undefined || nombre == undefined || apellido == undefined) {
-        res.status(400).json({ error: "Missing data. Required data: correo, hash, nombre, apellido" });
+    if (correo == undefined || password == undefined || nombre == undefined || apellido == undefined) {
+        res.status(400).json({ error: "Missing data. Required data: correo, password, nombre, apellido" });
         return;
     }
 
@@ -285,8 +286,27 @@ router.post("/newregister", (req, res) => {
         return;
     }
 
-    if (!isValidBcryptHash(hash)) {
-        res.status(400).json({ error: `The provided password hash is not in the correct format.` });
+    if (password.length < 8) {
+        res.status(400).json({ error: "password must be at least 8 characters long" });
+        return;
+    }
+
+    const hash = await new Promise((resolve, reject) => {
+        const saltRounds = 10;
+        bcrypt.hash(password, saltRounds, (err, hash) => {
+            if (err) {
+                reject(err.message); // handle error
+            } else {
+                resolve(hash);
+            }
+        });
+    }).catch((error) => {
+        console.log("bcrypt error:", error);
+        res.status(400).json({ error: "There was a problem with your password" });
+        return null;
+    });
+
+    if (hash === null) {
         return;
     }
 
