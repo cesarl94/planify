@@ -10,35 +10,39 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    overflow: hidden;
 }
 
 .modal-content {
     background-color: #475B63 !important;
-    padding: 20px;
-    border-radius: 8px;
     width: 80%;
-    max-width: 800px;
-    max-height: 90vh;
-    overflow-y: auto;
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    border: 2px solid #BACDB0 !important;
+    border-radius: 10px !important;
+    display: flex;
+    width: 100%;
 }
 
 .modal-layout {
     display: flex;
-    gap: 20px;
+    width: 100%;
 }
 
 .modal-left-section {
-    flex: 3;
+    width: 70%;
     display: flex;
     flex-direction: column;
+    padding: 10px;
 }
 
 .modal-right-section {
-    flex: 1;
+    width: 30%;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    padding: 20px;
+    gap: 30px;
+    padding: 10px;
     background-color: #475B63 !important;
     border-radius: 8px;
 }
@@ -78,6 +82,9 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    color: white;
+    background-color: black;
+    border-radius: 10px;
 }
 
 .status-select {
@@ -87,62 +94,14 @@
     border: 1px solid #ddd;
 }
 
-.modal-dates p {
+.dates {
+    display:flex;
+    align-items: center;
     margin: 5px 0;
-    color: #666;
-}
-
-.modal-members {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.members-list {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.member-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.member-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.member-icon {
-    color: #666;
-}
-
-.remove-member {
-    background: none;
-    border: none;
-    color: #ff4444;
-    cursor: pointer;
-    padding: 0 5px;
-}
-
-.add-member {
-    background-color: #4CAF50;
     color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.add-member:hover {
-    background-color: #45a049;
+    background-color: black;
+    border-radius: 10px;
+    height: 40px;
 }
 
 .close-button {
@@ -153,14 +112,27 @@
     border-radius: 4px;
     cursor: pointer;
     margin-top: 20px;
-    width: 100%;
+    width: 50%;
 }
 
 .close-button:hover {
     background-color: #da190b;
 }
 
-.modal-stars {
+.modal-stars-box {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    color: white;
+    background-color: black;
+    border-radius: 10px;
+    height: 60px;
+}
+
+.modal-users {
+    display:flex;
+    align-items: center;
+    color: white;
+    background-color: black;
+    border-radius: 10px;
+    height: 40px;
 }
