@@ -13,13 +13,15 @@ export const TaskProvider = ({ children }) => {
       const response = await fetch("http://localhost:4000/api/estados/tareas");
       const data = await response.json();
       
-      const filteredData = data.map(({ id_estado, Nombre, descripcion, nombre, id_tarea, Nombre_apellido}) => ({
+      const filteredData = data.map(({ id_estado, Nombre, descripcion, nombre, id_tarea, Nombre_apellido, fecha_inicio, fecha_fin }) => ({
         id_estado,
         Nombre,
         descripcion,
         nombre,
         id_tarea,
-        Nombre_apellido
+        Nombre_apellido,
+        fecha_inicio,
+        fecha_fin
       }));
 
       // Extraer estados únicos

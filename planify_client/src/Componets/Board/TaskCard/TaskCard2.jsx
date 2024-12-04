@@ -63,7 +63,10 @@ const TaskCard2 = ({ estadoId }) => {
                                     color={index <= (ratings[task.id_tarea] || 0) ? 'gold' : 'lightgray'}
                                     size={20}
                                     style={{ cursor: 'pointer', marginRight: '5px' }}
-                                    onClick={() => handleRating(task.id_tarea, index)} 
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleRating(task.id_tarea, index)
+                                    }} 
                                 />
                             ))}
                         </div>

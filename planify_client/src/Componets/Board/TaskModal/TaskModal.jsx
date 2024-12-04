@@ -41,7 +41,7 @@ const TaskModal = ({ isOpen, onClose, task, ratings, handleRating }) => {
                   size={20}
                   style={{ cursor: "pointer", marginRight: "5px" }}
                   onClick={(e) => {
-                    e.stopPropagation();
+                    // e.stopPropagation();
                     handleRating(task.id_tarea, index);
                   }}
                 />
