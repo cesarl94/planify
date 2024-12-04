@@ -248,16 +248,29 @@ Por ejemplo:
 
 * ``/api/task/:id``: Usado para eliminar una tarea en particular. La petición se realiza con un parámetro id que es un entero y debe coincidir con el PK de la tarea que estamos eliminando.
 
-En el proceso, podemos obtener o un estado de error 40X con la explicación correspondiente, si es que algo salió mal, o un estado 200 si la eliminación fue un éxito.
+    En el proceso, podemos obtener o un estado de error 40X con la explicación correspondiente, si es que algo salió mal, o un estado 200 con un mensaje si la eliminación fue un éxito.
 
-La estructura devuelta puede ser similar a esta:
+    La estructura devuelta puede ser similar a esta:
 
-```json
-{
-    "error": "There isn't any task with the id: 1", // Opcional
-    "message": "Resource sucessfully deleted" // Opcional
-}
-```
+    ```json
+    {
+        "error": "There isn't any task with the id: 1", // Opcional
+        "message": "Resource sucessfully deleted" // Opcional
+    }
+    ```
+
+* ``/api/state/:id``: Usado para eliminar un estado/columna en particular y todas las tareas relacionadas a él. La petición se realiza con un parámetro id que es un entero y debe coincidir con el PK del estado/columna que estamos eliminando.
+
+    En el proceso, podemos obtener o un estado de error 40X con la explicación correspondiente, si es que algo salió mal, o un estado 200 con un mensaje si la eliminación fue un éxito.
+
+    La estructura devuelta puede ser similar a esta:
+
+    ```json
+    {
+        "error": "There isn't any state with the id: 1", // Opcional
+        "message": "Resource sucessfully deleted" // Opcional
+    }
+    ```
 
 ---
 TODO:<br>

@@ -152,24 +152,24 @@ router.get("/board", async (httpReq, httpRes) => {
 });
 
 router.get("/task/:id", async (req, res) => {
-    const tarea_id = req.params.id;
+    const id_tarea = req.params.id;
 
-    const tarea_id_integer = parseSecureInt(tarea_id);
+    const id_tarea_integer = parseSecureInt(id_tarea);
 
-    if (isNaN(tarea_id_integer)) {
+    if (isNaN(id_tarea_integer)) {
         res.status(400).json({ error: "Provided task_id is invalid" });
         return;
     }
 
     const task = await new Promise((promRes, promRej) => {
-        dbContainer.db.execute(`SELECT * FROM tareas WHERE id_tarea = ?`, [tarea_id_integer], (sqlErr, sqlRes) => {
+        dbContainer.db.execute(`SELECT * FROM tareas WHERE id_tarea = ?`, [id_tarea_integer], (sqlErr, sqlRes) => {
             if (sqlErr) {
                 promRej(sqlErr.message);
                 return;
             }
 
             if (sqlRes.length == 0) {
-                promRej(`There isn't any task with the id: ${tarea_id_integer}`);
+                promRej(`There isn't any task with the id: ${id_tarea_integer}`);
                 return;
             }
 
@@ -185,7 +185,7 @@ router.get("/task/:id", async (req, res) => {
     }
 
     const task_users_ids = await new Promise((promRes, promRej) => {
-        dbContainer.db.execute(`SELECT id_usuario FROM usuarios_tareas WHERE id_tarea = ?`, [tarea_id_integer], (sqlErr, sqlRes) => {
+        dbContainer.db.execute(`SELECT id_usuario FROM usuarios_tareas WHERE id_tarea = ?`, [id_tarea_integer], (sqlErr, sqlRes) => {
             if (sqlErr) {
                 promRej(sqlErr.message);
                 return;
@@ -625,17 +625,17 @@ router.patch("/updatetask", async (req, res) => {
 });
 
 router.delete("/task/:id", async (req, res) => {
-    const tarea_id = req.params.id;
+    const id_tarea = req.params.id;
 
-    const tarea_id_integer = parseSecureInt(tarea_id);
+    const id_tarea_integer = parseSecureInt(id_tarea);
 
-    if (isNaN(tarea_id_integer)) {
+    if (isNaN(id_tarea_integer)) {
         res.status(400).json({ error: "Provided task_id is invalid" });
         return;
     }
 
     const deleteTaskResponse = await new Promise((promRes, promRej) => {
-        dbContainer.db.execute(`DELETE FROM tareas WHERE id_tarea = ?`, [tarea_id_integer], (sqlErr, sqlRes) => {
+        dbContainer.db.execute(`DELETE FROM tareas WHERE id_tarea = ?`, [id_tarea_integer], (sqlErr, sqlRes) => {
             if (sqlErr) {
                 const errorMessage = sqlErr.message;
                 res.status(400).json({ error: errorMessage });
@@ -644,7 +644,7 @@ router.delete("/task/:id", async (req, res) => {
             }
 
             if (sqlRes.affectedRows == 0) {
-                const errorMessage = `There isn't any task with the id: ${tarea_id_integer}`;
+                const errorMessage = `There isn't any task with the id: ${id_tarea_integer}`;
                 res.status(404).json({ error: errorMessage });
                 promRej(errorMessage);
                 return;
@@ -661,7 +661,7 @@ router.delete("/task/:id", async (req, res) => {
         return;
     }
 
-    dbContainer.db.execute(`DELETE FROM usuarios_tareas WHERE id_tarea = ?`, [tarea_id_integer], (sqlErr, sqlRes) => {
+    dbContainer.db.execute(`DELETE FROM usuarios_tareas WHERE id_tarea = ?`, [id_tarea_integer], (sqlErr, sqlRes) => {
         if (sqlErr) {
             res.status(400).json({ error: sqlErr.message });
             return;
@@ -669,6 +669,109 @@ router.delete("/task/:id", async (req, res) => {
 
         res.status(200).json({ message: "Resource sucessfully deleted" });
     });
+});
+
+router.delete("/state/:id", async (req, res) => {
+    const id_estado = req.params.id;
+
+    const id_estado_integer = parseSecureInt(id_estado);
+
+    if (isNaN(id_estado_integer)) {
+        res.status(400).json({ error: "Provided state_id is invalid" });
+        return;
+    }
+
+    const tasksInState = await new Promise((promRes, promRej) => {
+        dbContainer.db.execute(`SELECT id_tarea FROM tareas WHERE id_estado = ?`, [id_estado_integer], (sqlErr, sqlRes) => {
+            if (sqlErr) {
+                const errorMessage = sqlErr.message;
+                res.status(400).json({ error: errorMessage });
+                promRej(errorMessage);
+                return;
+            }
+
+            promRes(sqlRes.map((task) => task.id_tarea));
+        });
+    }).catch((errorMessage) => {
+        console.log("Error on DELETE /state/:id from SELECT TAREAS:", errorMessage);
+        return null;
+    });
+
+    if (tasksInState == null) {
+        return;
+    }
+
+    if (tasksInState.length > 0) {
+        const values = `(${tasksInState.map(() => "?").join(" , ")})`;
+
+        const deleteUsersTasksResponse = await new Promise((promRes, promRej) => {
+            dbContainer.db.execute(`DELETE FROM usuarios_tareas WHERE id_tarea IN ${values}`, tasksInState, (sqlErr, sqlRes) => {
+                if (sqlErr) {
+                    const errorMessage = sqlErr.message;
+                    res.status(400).json({ error: errorMessage });
+                    promRej(errorMessage);
+                    return;
+                }
+                promRes(sqlRes);
+            });
+        }).catch((errorMessage) => {
+            console.log("Error on DELETE /state/:id from DELETE USUARIOS_TAREAS:", errorMessage);
+            return null;
+        });
+
+        if (deleteUsersTasksResponse == null) {
+            return;
+        }
+
+        const deleteTaskResponse = await new Promise((promRes, promRej) => {
+            dbContainer.db.execute(`DELETE FROM tareas WHERE id_tarea IN ${values}`, tasksInState, (sqlErr, sqlRes) => {
+                if (sqlErr) {
+                    const errorMessage = sqlErr.message;
+                    res.status(400).json({ error: errorMessage });
+                    promRej(errorMessage);
+                    return;
+                }
+
+                promRes(sqlRes);
+            });
+        }).catch((errorMessage) => {
+            console.log("Error on DELETE /state/:id from DELETE TAREAS:", errorMessage);
+            return null;
+        });
+
+        if (deleteTaskResponse == null) {
+            return;
+        }
+    }
+
+    const deleteStateResponse = await new Promise((promRes, promRej) => {
+        dbContainer.db.execute(`DELETE FROM estados WHERE id_estado = ?`, [id_estado_integer], (sqlErr, sqlRes) => {
+            if (sqlErr) {
+                const errorMessage = sqlErr.message;
+                res.status(400).json({ error: errorMessage });
+                promRej(errorMessage);
+                return;
+            }
+
+            if (sqlRes.affectedRows == 0) {
+                const errorMessage = `There isn't any state with the id: ${id_estado_integer}`;
+                res.status(404).json({ error: errorMessage });
+                promRej(errorMessage);
+                return;
+            }
+
+            promRes(sqlRes);
+        });
+    }).catch((errorMessage) => {
+        console.log("Error on DELETE /state/:id from DELETE ESTADOS:", errorMessage);
+        return null;
+    });
+
+    if (deleteStateResponse == null) {
+        return;
+    }
+
+    res.status(200).json({ message: "Resource sucessfully deleted" });
 });
 
 module.exports = router;
