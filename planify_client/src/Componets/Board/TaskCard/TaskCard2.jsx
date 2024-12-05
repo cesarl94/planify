@@ -5,7 +5,7 @@ import './TaskCard.css';
 import TaskModal from '../TaskModal/TaskModal';
 
 const TaskCard2 = ({ estadoId }) => {
-    const { tasks } = useContext(TaskContext);
+    const { tasks, updateTaskPriority } = useContext(TaskContext);
 
     const groupedTasks = tasks
         .filter((task) => task.id_estado === estadoId) 
@@ -26,14 +26,7 @@ const TaskCard2 = ({ estadoId }) => {
     /////////
 
     
-    const [ratings, setRatings] = useState({});
-
-    const handleRating = (taskId, index) => {
-        setRatings((prevRatings) => ({
-            ...prevRatings,
-            [taskId]: index,
-        }));
-    };
+  
 
     // Modal tareas
     const [selectedTask, setSelectedTask] = useState(null);
@@ -60,12 +53,11 @@ const TaskCard2 = ({ estadoId }) => {
                             {[1, 2, 3, 4, 5].map((index) => (
                                 <FaStar
                                     key={index}
-                                    color={index <= (ratings[task.id_tarea] || 0) ? 'gold' : 'lightgray'}
-                                    size={20}
+                                    color={index <= (task.prioridad || 0) ? 'gold' : 'lightgray'}                                    size={20}
                                     style={{ cursor: 'pointer', marginRight: '5px' }}
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        handleRating(task.id_tarea, index)
+                                        updateTaskPriority(task.id_tarea, index); // Actualiza la prioridad
                                     }} 
                                 />
                             ))}
@@ -83,8 +75,6 @@ const TaskCard2 = ({ estadoId }) => {
                     isOpen={isModalOpen} 
                     onClose={closeModal} 
                     task={selectedTask} 
-                    ratings={ratings} 
-                    handleRating={handleRating}
                 />
             )}
         </div>

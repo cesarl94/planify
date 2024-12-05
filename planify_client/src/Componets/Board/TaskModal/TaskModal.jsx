@@ -9,7 +9,7 @@ import { CardStatusContext } from "../../../Context/CardStatusContext";
 const TaskModal = ({ isOpen, onClose, task }) => {
     const { updateTaskPriority, updateTaskState, deleteTask, tasks} = useContext(TaskContext);
     const {titles} = useContext(CardStatusContext);
-    // Actualiza las estrellas
+    //Actualiza las estrellas
     const updatedTask = tasks.find(t => t.id_tarea === task.id_tarea) || task;
     
   // Estado local para el estado de la tarea
