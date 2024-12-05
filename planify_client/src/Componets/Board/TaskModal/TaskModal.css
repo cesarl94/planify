@@ -14,7 +14,7 @@
 
 .modal-content {
     background-color: #475B63 !important;
-    padding: 20px;
+    padding: 10px;
     border-radius: 8px;
     width: 80%;
     max-width: 800px;
@@ -38,7 +38,6 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    padding: 20px;
     background-color: #475B63 !important;
     border-radius: 8px;
 }
@@ -46,13 +45,14 @@
 .modal-header {
     display: flex;
     align-items: center;
-    gap: 10px;
     margin-bottom: 15px;
 }
 
 .header-icon {
     font-size: 24px;
-    color: #333;
+    color: #ffffff;
+    height: 40px;
+    width: 40px;
 }
 
 .modal-title {
@@ -78,7 +78,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #000000;
+    color: #ffffff;
 }
 
 .status-select {
@@ -90,12 +90,36 @@
 
 .modal-dates p {
     margin: 5px 0;
-    color: #000000;
+    color: #ffffff;
 }
+
+.dates-vertical {
+    display: flex;
+    flex-direction: column;
+}
+
+.dates-horizontal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.calendar-icon {
+    cursor: pointer;
+    color: #475B63;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    padding: 5px;
+    border-radius: 25px;
+    border: none;
+}
+
 .modal-members {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    color: #ffffff;
 }
 .members-list {
     display: flex;
@@ -110,6 +134,7 @@
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 4px;
+    color: #000000;
 }
 .member-info {
     display: flex;
@@ -138,22 +163,26 @@
     background-color: #45a049;
 }
 
-.close-button {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 20px;
-    width: 100%;
+.modal-buttons {
+    display: flex;
+    justify-content: end;
+    gap: 20px;
 }
 
-.close-button:hover {
-    background-color: #da190b;
+.buttons {
+    background-color: #BACDB0;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    padding: 2px;
+    color: #475B63;
 }
 
 .modal-stars {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    color: #ffffff;
 }
