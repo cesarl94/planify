@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react'
 import Navbar from '../../Componets/Navbar/Navbar'
-import Footer from '../../Componets/Footer/Footer'
 import exclamation from '../../Images/icons/exclamation.png'
 import "./Login.css"
 const Login = () => {
@@ -59,7 +58,6 @@ const Login = () => {
                 </div>
 
             </main>
-            <footer><Footer /></footer>
         </div>
     )
 }

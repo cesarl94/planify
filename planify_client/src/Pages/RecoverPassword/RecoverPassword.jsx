@@ -1,6 +1,5 @@
 import React from 'react'
 import Navbar from '../../Componets/Navbar/Navbar'
-import Footer from '../../Componets/Footer/Footer'
 import exclamation from '../../Images/icons/exclamation.png'
 import "./RecoverPassword.css"
 import { useState } from 'react'
@@ -73,7 +72,7 @@ const RecoverPassword = () => {
         </div>
 
       </main>
-      <footer><Footer /></footer>
+  
     </div>
   );
 };

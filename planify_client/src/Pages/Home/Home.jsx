@@ -1,6 +1,5 @@
 import React from 'react';
 import Navbar from '../../Componets/Navbar/Navbar';
-import Footer from '../../Componets/Footer/Footer';
 import './Home.css';
 import '../../Global.css';
 import CreateBoard from '../../Componets/Board/CreateBoard/CreateBoard';
@@ -19,7 +18,6 @@ const Home = () => {
         </div>
       </main>
       
-      <footer><Footer /></footer>
     </div>
   );
 };
