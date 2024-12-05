@@ -1,6 +1,7 @@
 // TaskModal.jsx
 import React, { useContext } from "react";
 import { FaStar, FaUser } from "react-icons/fa";
+import { BiSolidTrash, BiX  } from "react-icons/bi";
 import "./TaskModal.css";
 import { TaskContext } from "../../../Context/TaskContext";
 import { CardStatusContext } from "../../../Context/CardStatusContext";
@@ -31,8 +32,14 @@ const TaskModal = ({ isOpen, onClose, task, ratings, handleRating }) => {
             />
           </div>
           <div className="modal-right-section">
+          <div className="modal-buttons">
+          <BiSolidTrash className="buttons" onClick={()=>(deleteTask(task.id_tarea))}/>
+          <BiX onClick={onClose} className="buttons"/>
+          </div>
             <div className="modal-stars">
-              {[1, 2, 3, 4, 5].map((index) => (
+            <p>Prioridad</p>
+            <div>
+            {[1, 2, 3, 4, 5].map((index) => (
                 <FaStar
                   key={index}
                   color={
@@ -48,6 +55,8 @@ const TaskModal = ({ isOpen, onClose, task, ratings, handleRating }) => {
                   }}
                 />
               ))}
+            </div>
+              
             </div>
 
             <div className="modal-status">
@@ -88,15 +97,10 @@ const TaskModal = ({ isOpen, onClose, task, ratings, handleRating }) => {
                 ))}
               </div>
               <button className="add-member">Add New Member</button>
-              
-              <button className="add-member" onClick={()=>(deleteTask(task.id_tarea))}>Delete task</button>
-
             </div>
           </div>
         </div>
-        <button onClick={onClose} className="close-button">
-          Cerrar
-        </button>
+        
       </div>
     </div>
   );
