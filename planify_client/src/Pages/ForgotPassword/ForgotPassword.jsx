@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Navbar from '../../Componets/Navbar/Navbar';
-import Footer from '../../Componets/Footer/Footer';
 import exclamation from '../../Images/icons/exclamation.png';
 import "./ForgotPassword.css";
 import { Navigate } from 'react-router-dom'
@@ -55,7 +54,6 @@ const ForgotPassword = () => {
                     )}
                 </div>
             </main>
-            <footer><Footer /></footer>
         </div>
     );
 };

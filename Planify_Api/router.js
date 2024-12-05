@@ -11,6 +11,26 @@ const dbContainer = require("./db");
 
 const router = express.Router();
 
+
+router.delete('/DeleteUsuario_tarea/:id_usuario/:id_tarea', (req, res) => {
+  const { id_usuario, id_tarea } = req.params;
+
+  const query = 'DELETE FROM usuarios_tareas WHERE id_usuario = ? AND id_tarea = ?';
+  dbContainer.db.query(query, [id_usuario, id_tarea], (err, result) => {
+    if (err) {
+      console.error('Error al ejecutar la consulta:', err);
+      return res.status(500).json({ mensaje: 'Error interno del servidor' });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ mensaje: 'No se encontró el registro a eliminar' });
+    }
+
+    res.json({ mensaje: 'Registro eliminado con éxito', filas_afectadas: result.affectedRows });
+  });
+});
+
+
 router.get("/estados", (req, res) => {
   const query = "SELECT * FROM estados";
   dbContainer.db.query(query, (err, results) => {
@@ -987,6 +1007,11 @@ router.patch("/tareas/:id/estado", (req, res) => {
     res.status(200).json({ id_tarea, id_estado });
   });
 });
+
+
+
+
+
 
 // router.patch("/task/:id/priority", (req, res) => {
 //   const id_tarea = req.params.id;

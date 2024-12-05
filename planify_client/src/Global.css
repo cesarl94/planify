@@ -16,10 +16,7 @@ main {
     flex: 1; 
 }
 
-footer {
-    padding: 1rem;
-    background-color: rgb(218, 238, 189);
-}
+
 .container-body {
     display: flex;
     flex-direction: column;

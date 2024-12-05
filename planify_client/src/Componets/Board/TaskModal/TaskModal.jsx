@@ -71,6 +71,31 @@ const TaskModal = ({ isOpen, onClose, task }) => {
     }
   };
 
+
+  const handleDeleteUser = async (idUsuario, idTarea) => {
+
+    try {
+      const response = await fetch(`http://localhost:4000/api/DeleteUsuario_tarea/${idUsuario}/${idTarea}`, {
+        method: 'DELETE', 
+        headers: {
+          'Content-Type': 'application/json', 
+        },
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Error al eliminar:', errorData.mensaje);
+        alert(`Error: ${errorData.mensaje}`);
+        return;
+      }
+  
+      const data = await response.json();
+      window.location.reload()
+      console.log('Usuario eliminado con éxito:', data);
+    } catch (error) {
+      console.error('Error de red o del servidor:', error);
+    }
+  };
   return (
     <div className="modal-overlay" onClick={handleOverlayClick}>
       <div className="modal-content">
@@ -174,8 +199,8 @@ const TaskModal = ({ isOpen, onClose, task }) => {
                       <FaUser className="member-icon" />
                       <span>{nombre}</span>
                     </div>
-                    
-                    <button className="remove-member" title="Remove member" onClick={() => alert(`Eliminó a ${task.id_usuario}`)}>
+                    <button className="remove-member" title="Remove member" onClick={() => handleDeleteUser(task.ids_usuario[idx], task.id_tarea)}
+                    >
                       ✖
                     </button>
                   </div>

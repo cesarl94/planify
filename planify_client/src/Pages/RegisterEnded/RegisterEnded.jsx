@@ -1,6 +1,5 @@
 import React from 'react'
 import Navbar from '../../Componets/Navbar/Navbar'
-import Footer from '../../Componets/Footer/Footer'
 import "./RegisterEnded.css"
 
 const RegisterEnded = () => {
@@ -23,7 +22,6 @@ const RegisterEnded = () => {
         </div>
 
       </main>
-      <footer><Footer /></footer>
     </div>
   )
 }

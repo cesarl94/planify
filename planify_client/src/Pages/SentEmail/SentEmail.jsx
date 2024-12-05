@@ -1,6 +1,5 @@
 import React from 'react'
 import Navbar from '../../Componets/Navbar/Navbar'
-import Footer from '../../Componets/Footer/Footer'
 import "./SentEmail.css"
 
 const SentEmail = () => {
@@ -20,7 +19,6 @@ const SentEmail = () => {
         </div>
 
       </main>
-      <footer><Footer /></footer>
     </div>
   )
 }

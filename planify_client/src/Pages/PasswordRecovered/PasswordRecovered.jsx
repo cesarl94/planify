@@ -1,6 +1,5 @@
 import React from 'react'
 import Navbar from '../../Componets/Navbar/Navbar'
-import Footer from '../../Componets/Footer/Footer'
 import "./PasswordRecovered.css"
 
 const PasswordRecovered = () => {
@@ -21,7 +20,6 @@ const PasswordRecovered = () => {
                 </div>
 
             </main>
-            <footer><Footer /></footer>
         </div>
     )
 }

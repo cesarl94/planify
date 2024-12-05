@@ -7,22 +7,24 @@ import TaskModal from '../TaskModal/TaskModal';
 const TaskCard2 = ({ estadoId }) => {
 
     const { tasks, updateTaskPriority } = useContext(TaskContext);
-
+   
     const groupedTasks = tasks
-        .filter((task) => task.id_estado === estadoId) 
-        .reduce((acc, task) => {
-            if (!acc[task.id_tarea]) {
-                acc[task.id_tarea] = {
-                    ...task,
-                    Nombre_apellido: [task.Nombre_apellido],
-                };
-            } else {
-                acc[task.id_tarea].Nombre_apellido.push(task.Nombre_apellido); 
-            }
-            return acc;
-        }, {});
+    .filter((task) => task.id_estado === estadoId)
+    .reduce((acc, task) => {
+        if (!acc[task.id_tarea]) {
+            acc[task.id_tarea] = {
+                ...task,
+                Nombre_apellido: [task.Nombre_apellido],
+                ids_usuario: [task.id_usuario], 
+            };
+        } else {
+            acc[task.id_tarea].Nombre_apellido.push(task.Nombre_apellido);
+            acc[task.id_tarea].ids_usuario.push(task.id_usuario); // Agrega el nuevo ID de usuario
+        }
+        return acc;
+    }, {});
 
-    const filteredTasks = Object.values(groupedTasks);
+const filteredTasks = Object.values(groupedTasks);
 
     /////////
 
