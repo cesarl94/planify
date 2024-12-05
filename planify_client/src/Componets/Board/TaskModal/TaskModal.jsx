@@ -15,6 +15,7 @@ const TaskModal = ({ isOpen, onClose, task }) => {
     useContext(TaskContext);
   const { titles } = useContext(CardStatusContext);
   //Actualiza las estrellas
+
   const updatedTask = tasks.find((t) => t.id_tarea === task.id_tarea) || task;
 
   // Estado local para el estado de la tarea
@@ -71,6 +72,43 @@ const TaskModal = ({ isOpen, onClose, task }) => {
     }
   };
 
+   const handleupdatename = async (taskId, name) =>{
+     try{
+      const response = await fetch(`http://localhost:4000/api/updatetask`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id_tarea: taskId, nombre: name }),
+      });
+
+      window.location.reload();
+
+    }catch(error){
+
+      console.error(`Error al actualizar nombre`,error)
+     }
+   }
+
+
+
+   const handleupdatedescripcion = async (taskId, descripcion) =>{
+    try{
+     const response = await fetch(`http://localhost:4000/api/updatetask`, {
+       method: "PATCH",
+       headers: {
+         "Content-Type": "application/json",
+       },
+       body: JSON.stringify({ id_tarea: taskId, descripcion: descripcion }),
+     });
+
+     window.location.reload();
+
+   }catch(error){
+
+     console.error(`Error al actualizar nombre`,error)
+    }
+  }
 
   const handleDeleteUser = async (idUsuario, idTarea) => {
 
@@ -96,6 +134,7 @@ const TaskModal = ({ isOpen, onClose, task }) => {
       console.error('Error de red o del servidor:', error);
     }
   };
+
   return (
     <div className="modal-overlay" onClick={handleOverlayClick}>
       <div className="modal-content">
@@ -105,15 +144,16 @@ const TaskModal = ({ isOpen, onClose, task }) => {
               <BiFile className="header-icon" />
               <input
                 type="text"
-                value={task.nombre}
-                readOnly
+                placeholder={task.nombre}  
                 className="modal-title"
+                onBlur ={(e)=>(handleupdatename(task.id_tarea, e.target.value))}
               />
             </div>
             <textarea
-              value={task.descripcion}
-              readOnly
+              placeholder={task.descripcion}
               className="modal-description"
+              onBlur ={(e)=>(handleupdatedescripcion(task.id_tarea, e.target.value))}
+
             />
           </div>
           <div className="modal-right-section">
@@ -177,7 +217,7 @@ const TaskModal = ({ isOpen, onClose, task }) => {
 
               <div className="dates-horizontal">
                 <div className="dates-vertical">
-                  <p>Fecha de Finalización:</p>
+                  <p>End date:</p>
 
                   <p>
                     {endDate
@@ -193,6 +233,7 @@ const TaskModal = ({ isOpen, onClose, task }) => {
             <div className="modal-members">
               <h4>Members:</h4>
               <div className="members-list">
+                
                 {task.Nombre_apellido.map((nombre, idx) => (
                   <div key={idx} className="member-item">
                     <div className="member-info">
