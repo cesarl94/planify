@@ -6,7 +6,6 @@ import TaskModal from '../TaskModal/TaskModal';
 
 const TaskCard2 = ({ estadoId }) => {
     const { tasks } = useContext(TaskContext);
-
     const groupedTasks = tasks
         .filter((task) => task.id_estado === estadoId) 
         .reduce((acc, task) => {

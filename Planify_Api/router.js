@@ -34,6 +34,7 @@ router.get("/estados/tareas", (req, res) => {
             t.fecha_limite,
             t.orden,
             t.prioridad,
+            ut.id_usuario,
             CONCAT(u.Nombre, ' ', u.apellido) AS 'Nombre_apellido'
         FROM estados e
         INNER JOIN tareas t ON t.id_estado = e.id_estado

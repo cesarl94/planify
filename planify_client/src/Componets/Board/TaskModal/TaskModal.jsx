@@ -81,7 +81,8 @@ const TaskModal = ({ isOpen, onClose, task, ratings, handleRating }) => {
                       <FaUser className="member-icon" />
                       <span>{nombre}</span>
                     </div>
-                    <button className="remove-member" title="Remove member">
+                    
+                    <button className="remove-member" title="Remove member" onClick={() => alert(`Eliminó a ${task.id_usuario}`)}>
                       ✖
                     </button>
                   </div>
