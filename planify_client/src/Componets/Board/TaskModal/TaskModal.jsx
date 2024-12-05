@@ -1,15 +1,34 @@
 // TaskModal.jsx
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaStar, FaUser } from "react-icons/fa";
 import { BiSolidTrash, BiX, BiFile } from "react-icons/bi";
 import "./TaskModal.css";
 import { TaskContext } from "../../../Context/TaskContext";
 import { CardStatusContext } from "../../../Context/CardStatusContext";
 
-const TaskModal = ({ isOpen, onClose, task, ratings, handleRating }) => {
-    const { updateTaskState, deleteTask} = useContext(TaskContext);
+const TaskModal = ({ isOpen, onClose, task }) => {
+    const { updateTaskPriority, updateTaskState, deleteTask, tasks} = useContext(TaskContext);
     const {titles} = useContext(CardStatusContext);
+    // Actualiza las estrellas
+    const updatedTask = tasks.find(t => t.id_tarea === task.id_tarea) || task;
+    
+  // Estado local para el estado de la tarea
+  const [currentState, setCurrentState] = useState(task.id_estado);
+
+  useEffect(() => {
+    // Actualiza el estado local cuando la tarea cambia
+    setCurrentState(task.id_estado);
+  }, [task]);
+
   if (!isOpen) return null;
+
+  const handleStateChange = async (e) => {
+    const newStateId = parseInt(e.target.value);
+    if (currentState !== newStateId) {
+      await updateTaskState(task.id_tarea, newStateId);
+      setCurrentState(newStateId); // Actualiza el estado local
+    }
+  };
 
   return (
     <div className="modal-overlay">
@@ -43,15 +62,15 @@ const TaskModal = ({ isOpen, onClose, task, ratings, handleRating }) => {
                 <FaStar
                   key={index}
                   color={
-                    index <= (ratings[task.id_tarea] || 0)
+                    index <= (updatedTask.prioridad || 0)
                       ? "gold"
                       : "lightgray"
                   }
                   size={20}
                   style={{ cursor: "pointer", marginRight: "5px" }}
                   onClick={(e) => {
-                    // e.stopPropagation();
-                    handleRating(task.id_tarea, index);
+                    e.stopPropagation();
+                    updateTaskPriority(updatedTask.id_tarea, index);
                   }}
                 />
               ))}
@@ -61,19 +80,17 @@ const TaskModal = ({ isOpen, onClose, task, ratings, handleRating }) => {
 
             <div className="modal-status">
             <label>Estado:</label>
-            <select 
-                className="status-select" 
-                onChange={async (e) => {
-                    const newStateId = parseInt(e.target.value);
-                    await updateTaskState(task.id_tarea, newStateId);
-                }}
-            >
-                {titles.map(estado => (
-                    <option key={estado.id_estado} value={estado.id_estado}>
-                        {estado.nombre}
-                    </option>
+            <select
+                className="status-select"
+                value={currentState} // Usa el estado local
+                onChange={handleStateChange}
+              >
+                {titles.map((estado) => (
+                  <option key={estado.id_estado} value={estado.id_estado}>
+                    {estado.nombre}
+                  </option>
                 ))}
-            </select>
+              </select>
         </div>
 
             <div className="modal-dates">
