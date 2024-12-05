@@ -1,7 +1,7 @@
 // TaskModal.jsx
 import React, { useContext } from "react";
 import { FaStar, FaUser } from "react-icons/fa";
-import { BiSolidTrash, BiX  } from "react-icons/bi";
+import { BiSolidTrash, BiX, BiFile } from "react-icons/bi";
 import "./TaskModal.css";
 import { TaskContext } from "../../../Context/TaskContext";
 import { CardStatusContext } from "../../../Context/CardStatusContext";
@@ -17,7 +17,7 @@ const TaskModal = ({ isOpen, onClose, task, ratings, handleRating }) => {
         <div className="modal-layout">
           <div className="modal-left-section">
             <div className="modal-header">
-              <FaUser className="header-icon" />
+              <BiFile className="header-icon" />
               <input
                 type="text"
                 value={task.nombre}
