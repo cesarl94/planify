@@ -45,7 +45,7 @@ const TaskCard2 = ({ estadoId }) => {
     return (
         <div>
             {filteredTasks.map((task) => (
-                <div className="task-card text-center p-1" key={task.id_tarea} onClick={() => handleTaskClick(task)}>
+                <div className="task-card p-1" key={task.id_tarea} onClick={() => handleTaskClick(task)}>
                     <p>{task.nombre}</p>
 
                     <div className="d-flex justify-content-between">
