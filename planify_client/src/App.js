@@ -12,6 +12,7 @@ import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
 import SentEmail from "./Pages/SentEmail/SentEmail";
 import RecoverPassword from "./Pages/RecoverPassword/RecoverPassword";
 import PasswordRecovered from "./Pages/PasswordRecovered/PasswordRecovered";
+import { MemberProvider } from "./Context/MemberContext";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,7 @@ function App() {
 
   return (
     <div >
+      <MemberProvider>
       <TaskProvider>
       <CardStatusProvider>
         <UserProvider>
@@ -61,6 +63,7 @@ function App() {
         </UserProvider>
       </CardStatusProvider>
       </TaskProvider>
+      </MemberProvider>
     </div>
   );
 }

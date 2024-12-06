@@ -15,11 +15,12 @@
 .modal-content {
     background-color: #475B63 !important;
     padding: 10px;
-    border-radius: 8px;
+    border-radius: 15px!important;
     width: 80%;
     max-width: 800px;
     max-height: 90vh;
     overflow-y: auto;
+    border: 2px solid white !important;
 }
 
 .modal-layout {
@@ -31,6 +32,7 @@
     flex: 3;
     display: flex;
     flex-direction: column;
+    gap: 5px;
 }
 
 .modal-right-section {
@@ -40,12 +42,12 @@
     gap: 20px;
     background-color: #475B63 !important;
     border-radius: 8px;
+    /* padding: 5px; */
 }
 
 .modal-header {
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
 }
 
 .header-icon {
@@ -59,8 +61,8 @@
     flex: 1;
     padding: 8px;
     background-color: #BACDB0 !important;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    border: 1.5px solid #729b79;
+    border-radius: 10px;
     font-size: 16px;
 }
 
@@ -68,10 +70,27 @@
     flex: 1;
     padding: 8px;
     background-color: #BACDB0 !important;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    border: 1.5px solid #729b79;
+    border-radius: 10px;
     resize: vertical;
     min-height: 200px;
+}
+
+.modal-stars, .modal-status, .dates-horizontal, .modal-members {
+    background-color: #2e2c2f;
+    border-radius: 15px;
+    padding: 5px 7px;
+}
+
+.modal-stars {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #ffffff;
+}
+
+.modal-stars p {
+    margin-bottom: 0px;
 }
 
 .modal-status {
@@ -84,18 +103,20 @@
 .status-select {
     flex: 1;
     padding: 5px;
-    border-radius: 4px;
+    border-radius: 25px;
     border: 1px solid #ddd;
+    font-weight: 600;
 }
 
-.modal-dates p {
-    margin: 5px 0;
+.dates-vertical p {
+    margin-bottom: 0px;
     color: #ffffff;
 }
 
 .dates-vertical {
     display: flex;
     flex-direction: column;
+    color: white;
 }
 
 .dates-horizontal {
@@ -105,7 +126,6 @@
 }
 
 .calendar-icon {
-    cursor: pointer;
     color: #475B63;
     width: 40px;
     height: 40px;
@@ -115,35 +135,61 @@
     border: none;
 }
 
+.start-datee {
+    font-weight: 600;
+    background-color: #2e2c2f;
+    border: none;
+    color: white;
+    border: none;
+}
+
+.end-datepicker {
+    font-weight: 600;
+    background-color: #2e2c2f;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
 .modal-members {
     display: flex;
     flex-direction: column;
     gap: 10px;
     color: #ffffff;
 }
+
+.modal-members p {
+    margin-bottom: 0px;
+}
+
 .members-list {
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
+
 .member-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 8px;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    color: #000000;
+    background-color: #2e2c2f;
+    border: none;
+    border-radius: 25px;
+    color: white;
+    font-weight: 600;
 }
+
 .member-info {
     display: flex;
     align-items: center;
     gap: 10px;
 }
+
 .member-icon {
     color: #666;
 }
+
 .remove-member {
     background: none;
     border: none;
@@ -151,16 +197,19 @@
     cursor: pointer;
     padding: 0 5px;
 }
+
 .add-member {
-    background-color: #4CAF50;
-    color: white;
+    background-color: white;
+    color: black;
     border: none;
     padding: 8px 16px;
-    border-radius: 4px;
+    border-radius: 25px;
     cursor: pointer;
+    font-weight: 600;
 }
+
 .add-member:hover {
-    background-color: #45a049;
+    background-color: #BACDB0;
 }
 
 .modal-buttons {
@@ -180,9 +229,3 @@
     color: #475B63;
 }
 
-.modal-stars {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    color: #ffffff;
-}
