@@ -203,7 +203,7 @@ const TaskModal = ({ isOpen, onClose, task }) => {
             <div className="modal-dates">
               <div className="dates-horizontal">
                 <div className="dates-vertical">
-                  <p>Fecha de Inicio:</p>
+                  <p>Fecha de Creación:</p>
 
                   <p>
                     {startDate
