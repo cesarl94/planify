@@ -288,9 +288,11 @@ Por ejemplo:
 
 ---
 
-Problemas: 
-* Failed to Connect to MySQL at 127.0.0.1:3306 with user root.<br>
-<img src="./playnify_shared/docs/error.jpg"><br>
-Solucion abrir el instalador de MySQL Server 8 y procurar tener activada esta opción:<br>
-<img src="./playnify_shared/docs/solucion.jpeg"><br>
+> [!CAUTION]
+> ### Posible problema: <br>
+>
+> Failed to Connect to MySQL at 127.0.0.1:3306 with user root.<br>
+> <img src="./playnify_shared/docs/error.jpg"><br>
+> Solución: abrir el instalador de MySQL Server 8 y procurar tener activada esta opción:<br>
+> <img src="./playnify_shared/docs/solucion.jpeg"><br>
 
