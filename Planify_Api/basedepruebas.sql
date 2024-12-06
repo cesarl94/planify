@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS Tareas (
   id_tarea INT AUTO_INCREMENT,
   nombre VARCHAR(100) NOT NULL,
   descripcion VARCHAR(250),
-  fecha_creacion DATETIME,
+  fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
   fecha_limite DATETIME,
   orden INT NOT NULL,
   prioridad INT,
