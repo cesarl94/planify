@@ -1,6 +1,6 @@
 ### Notas:<br>
 
-Usamos MySQL Server 8
+#### Para hacer pruebas locales, tener instalado [MySQL Server 8](https://dev.mysql.com/downloads/mysql/8.0.html) y [Node.js 22](https://nodejs.org/en/blog/release/v22.11.0)
 
 ---
 
