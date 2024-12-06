@@ -1,9 +1,11 @@
 // TaskModal.jsx
 import React, { useContext, useEffect, useState } from "react";
-import { FaStar, FaUser, FaCalendar } from "react-icons/fa";
+import { FaStar, FaUser, FaRegCalendarAlt } from "react-icons/fa";
+import { CgSandClock } from "react-icons/cg";
 import { BiSolidTrash, BiX, BiFile } from "react-icons/bi";
 import "./TaskModal.css";
 import { TaskContext } from "../../../Context/TaskContext";
+import { MemberContext } from "../../../Context/MemberContext";
 import { CardStatusContext } from "../../../Context/CardStatusContext";
 import moment from "moment";
 import "bootstrap-datepicker/dist/css/bootstrap-datepicker.css";
@@ -11,8 +13,14 @@ import $ from "jquery";
 import "bootstrap-datepicker";
 
 const TaskModal = ({ isOpen, onClose, task }) => {
-  const { updateTaskPriority, updateTaskState, deleteTask, tasks } =
-    useContext(TaskContext);
+  const { members, addMemberToTask } = useContext(MemberContext);
+  const {
+    updateTaskField,
+    updateTaskPriority,
+    updateTaskState,
+    deleteTask,
+    tasks,
+  } = useContext(TaskContext);
   const { titles } = useContext(CardStatusContext);
   //Actualiza las estrellas
 
@@ -22,6 +30,8 @@ const TaskModal = ({ isOpen, onClose, task }) => {
   const [currentState, setCurrentState] = useState(task.id_estado);
   const [startDate, setStartDate] = useState(task.fecha_creacion);
   const [endDate, setEndDate] = useState(task.fecha_fin);
+  // const [newMemberId, setNewMemberId] = useState("");
+  const [selectedMember, setSelectedMember] = useState(null);
 
   useEffect(() => {
     setCurrentState(task.id_estado);
@@ -72,66 +82,91 @@ const TaskModal = ({ isOpen, onClose, task }) => {
     }
   };
 
-   const handleupdatename = async (taskId, name) =>{
-     try{
-      const response = await fetch(`http://localhost:4000/api/updatetask`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id_tarea: taskId, nombre: name }),
-      });
+  const handleUpdateName = async (taskId, name) => {
+    if (name === "") return;
+    await updateTaskField(taskId, { nombre: name });
+  };
 
-      window.location.reload();
+  const handleUpdateDescripcion = async (taskId, descripcion) => {
+    if (descripcion === "") return;
+    await updateTaskField(taskId, { descripcion: descripcion });
+  };
 
-    }catch(error){
+  //  const handleupdatename = async (taskId, name) =>{
 
-      console.error(`Error al actualizar nombre`,error)
-     }
-   }
+  //   if(name === ''){ return };
 
+  //    try{
+  //     const response = await fetch(`http://localhost:4000/api/updatetask`, {
+  //       method: "PATCH",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ id_tarea: taskId, nombre: name }),
+  //     });
 
+  //     window.location.reload();
 
-   const handleupdatedescripcion = async (taskId, descripcion) =>{
-    try{
-     const response = await fetch(`http://localhost:4000/api/updatetask`, {
-       method: "PATCH",
-       headers: {
-         "Content-Type": "application/json",
-       },
-       body: JSON.stringify({ id_tarea: taskId, descripcion: descripcion }),
-     });
+  //   }catch(error){
 
-     window.location.reload();
+  //     console.error(`Error al actualizar nombre`,error)
+  //    }
+  //  }
 
-   }catch(error){
+  //  const handleupdatedescripcion = async (taskId, descripcion) =>{
 
-     console.error(`Error al actualizar nombre`,error)
-    }
-  }
+  //   if(descripcion === ''){ return };
+
+  //   try{
+  //    const response = await fetch(`http://localhost:4000/api/updatetask`, {
+  //      method: "PATCH",
+  //      headers: {
+  //        "Content-Type": "application/json",
+  //      },
+  //      body: JSON.stringify({ id_tarea: taskId, descripcion: descripcion }),
+  //    });
+
+  //    window.location.reload();
+
+  //  }catch(error){
+
+  //    console.error(`Error al actualizar nombre`,error)
+  //   }
+  // }
 
   const handleDeleteUser = async (idUsuario, idTarea) => {
-
     try {
-      const response = await fetch(`http://localhost:4000/api/DeleteUsuario_tarea/${idUsuario}/${idTarea}`, {
-        method: 'DELETE', 
-        headers: {
-          'Content-Type': 'application/json', 
-        },
-      });
-  
+      const response = await fetch(
+        `http://localhost:4000/api/DeleteUsuario_tarea/${idUsuario}/${idTarea}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('Error al eliminar:', errorData.mensaje);
+        console.error("Error al eliminar:", errorData.mensaje);
         alert(`Error: ${errorData.mensaje}`);
         return;
       }
-  
+
       const data = await response.json();
-      window.location.reload()
-      console.log('Usuario eliminado con éxito:', data);
+      window.location.reload();
+      console.log("Usuario eliminado con éxito:", data);
     } catch (error) {
-      console.error('Error de red o del servidor:', error);
+      console.error("Error de red o del servidor:", error);
+    }
+  };
+
+  const handleAddMember = async () => {
+    if (selectedMember) {
+      await addMemberToTask(task.id_tarea, selectedMember.id_usuario);
+      setSelectedMember(null); // Limpiar selección después de añadir
+    } else {
+      alert("Por favor, selecciona un usuario válido.");
     }
   };
 
@@ -144,16 +179,17 @@ const TaskModal = ({ isOpen, onClose, task }) => {
               <BiFile className="header-icon" />
               <input
                 type="text"
-                placeholder={task.nombre}  
+                placeholder={task.nombre}
                 className="modal-title"
-                onBlur ={(e)=>(handleupdatename(task.id_tarea, e.target.value))}
+                onBlur={(e) => handleUpdateName(task.id_tarea, e.target.value)}
               />
             </div>
             <textarea
               placeholder={task.descripcion}
               className="modal-description"
-              onBlur ={(e)=>(handleupdatedescripcion(task.id_tarea, e.target.value))}
-
+              onBlur={(e) =>
+                handleUpdateDescripcion(task.id_tarea, e.target.value)
+              }
             />
           </div>
           <div className="modal-right-section">
@@ -165,7 +201,7 @@ const TaskModal = ({ isOpen, onClose, task }) => {
               <BiX onClick={onClose} className="buttons" />
             </div>
             <div className="modal-stars">
-              <p>Prioridad</p>
+              <p>Priority</p>
               <div>
                 {[1, 2, 3, 4, 5].map((index) => (
                   <FaStar
@@ -187,7 +223,7 @@ const TaskModal = ({ isOpen, onClose, task }) => {
             </div>
 
             <div className="modal-status">
-              <label>Estado:</label>
+              <label>State:</label>
               <select
                 className="status-select"
                 value={currentState} // Usa el estado local
@@ -200,54 +236,76 @@ const TaskModal = ({ isOpen, onClose, task }) => {
               </select>
             </div>
 
-            <div className="modal-dates">
-              <div className="dates-horizontal">
-                <div className="dates-vertical">
-                  <p>Fecha de Inicio:</p>
+            <div className="dates-horizontal">
+              <div className="dates-vertical">
+                <p>Creation Date:</p>
 
-                  <p>
-                    {startDate
-                      ? moment(startDate).format("MMM Do YY")
-                      : "No asignada"}
-                  </p>
-                </div>
-
-                <input className="calendar-icon start-datepicker" />
+                <p>
+                  {startDate
+                    ? moment(startDate).format("MMM Do YY")
+                    : "Not assigned"}
+                </p>
               </div>
+              <FaRegCalendarAlt className="calendar-icon" />
+            </div>
 
-              <div className="dates-horizontal">
-                <div className="dates-vertical">
-                  <p>End date:</p>
+            <div className="dates-horizontal">
+              <div className="dates-vertical">
+                <p>End date:</p>
 
-                  <p>
-                    {endDate
-                      ? moment(endDate).format("MMM Do YY")
-                      : "No asignada"}
-                  </p>
-                </div>
-
-                <input className="calendar-icon end-datepicker" />
+                <p>
+                  <input
+                    className="end-datepicker"
+                    value={
+                      endDate
+                        ? moment(endDate).format("MMM Do YY")
+                        : "Not asigned"
+                    }
+                    onChange={() => {}}
+                  />
+                </p>
               </div>
+              <CgSandClock className="calendar-icon" />
             </div>
 
             <div className="modal-members">
-              <h4>Members:</h4>
+              <p>Members:</p>
               <div className="members-list">
-                
                 {task.Nombre_apellido.map((nombre, idx) => (
                   <div key={idx} className="member-item">
                     <div className="member-info">
                       <FaUser className="member-icon" />
                       <span>{nombre}</span>
                     </div>
-                    <button className="remove-member" title="Remove member" onClick={() => handleDeleteUser(task.ids_usuario[idx], task.id_tarea)}
-                    >
+                    <button
+                      className="remove-member"
+                      title="Remove member"
+                      onClick={() =>
+                        handleDeleteUser(task.ids_usuario[idx], task.id_tarea)
+                      }>
                       ✖
                     </button>
                   </div>
                 ))}
               </div>
-              <button className="add-member">Add New Member</button>
+              <select
+                onChange={(e) => {
+                  const userId = parseInt(e.target.value);
+                  const member = members.find(
+                    (user) => user.id_usuario === userId
+                  );
+                  setSelectedMember(member || null); // Asegúrate de que sea null si no se encuentra
+                }}>
+                <option value="">Selecciona un usuario</option>
+                {members.map((user) => (
+                  <option key={user.id_usuario} value={user.id_usuario}>
+                    {user.nombre} {user.apellido}
+                  </option>
+                ))}
+              </select>
+              <button className="add-member" onClick={handleAddMember}>
+                Add New Member
+              </button>
             </div>
           </div>
         </div>

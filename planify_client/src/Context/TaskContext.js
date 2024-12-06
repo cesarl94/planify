@@ -75,16 +75,6 @@ export const TaskProvider = ({ children }) => {
         throw new Error("Error al actualizar la prioridad de la tarea");
       }
 
-      // Esto de abajo no actualiza las estrellas en el modal, solucionado en TaskModal
-      // Actualizar el estado local
-      // setTasks(prevTasks =>
-      //   prevTasks.map(task =>
-      //     task.id_tarea === taskId
-      //       ? { ...task, prioridad: newPriorityId }
-      //       : task
-      //   )
-      // );
-
       // Recargar las tareas para asegurar sincronización
       await fetchTasks();
     } catch (error) {
@@ -93,6 +83,35 @@ export const TaskProvider = ({ children }) => {
     }
   };
 
+  const updateTaskField = async (taskId, updates) => {
+    try {
+      const response = await fetch(`http://localhost:4000/api/updatetask`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id_tarea: taskId, ...updates }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Error al actualizar la tarea");
+      }
+
+      // Actualizar el estado local
+      setTasks(prevTasks =>
+        prevTasks.map(task =>
+          task.id_tarea === taskId
+            ? { ...task, ...updates }
+            : task
+        )
+      );
+    } catch (error) {
+      console.error("Error al actualizar la tarea:", error);
+      alert("Error al actualizar la tarea");
+    }
+  };
+
+  
   useEffect(() => {
     fetchTasks();
   }, []);
@@ -104,6 +123,7 @@ export const TaskProvider = ({ children }) => {
         deleteTask,
         updateTaskPriority,
         updateTaskState,
+        updateTaskField,
       }}>
       {children}
     </TaskContext.Provider>

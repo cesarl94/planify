@@ -936,57 +936,6 @@ router.delete("/state/:id", async (req, res) => {
   res.status(200).json({ message: "Resource sucessfully deleted" });
 });
 
-// Para TaskModal, NO FUNCIONA ACA O EN TASKCONTEXT
-// router.patch("/task/:id/dates", (req, res) => {
-//   const id_tarea = req.params.id;
-
-//   const { fecha_inicio, fecha_fin } = req.body;
-
-//   if (!fecha_inicio || !fecha_fin) {
-//     return res
-//       .status(400)
-//       .json({ error: "Faltan campos requeridos: fecha_inicio, fecha_fin" });
-//   }
-
-//   const query = `UPDATE tareas SET fecha_creacion = ?, fecha_limite = ? WHERE id_tarea = ?`;
-
-//   dbContainer.db.execute(
-//     query,
-//     [fecha_inicio, fecha_fin, id_tarea],
-//     (err, results) => {
-//       if (err) {
-//         return res.status(400).json({ error: err.message });
-//       }
-
-//       if (results.affectedRows === 0) {
-//         return res.status(404).json({ error: "Tarea no encontrada" });
-//       }
-
-//       res.status(200).json({ id_tarea, fecha_inicio, fecha_fin });
-//     }
-//   );
-// });
-
-// router.get("/task/:id/users", (req, res) => {
-//   const id_tarea = req.params.id;
-
-//   const query = `
-//         SELECT u.id_usuario, u.nombre, u.apellido 
-//         FROM usuarios u
-//         JOIN usuarios_tareas ut ON u.id_usuario = ut.id_usuario
-//         WHERE ut.id_tarea = ?
-//     `;
-
-//   dbContainer.db.execute(query, [id_tarea], (err, results) => {
-//     if (err) {
-//       res.status(400).json({ error: err.message });
-//       return;
-//     }
-//     res.status(200).json(results);
-//   });
-// });
-
-
 router.patch("/tareas/:id/estado", (req, res) => {
   const id_tarea = req.params.id;
   const { id_estado } = req.body;
@@ -1009,36 +958,24 @@ router.patch("/tareas/:id/estado", (req, res) => {
 });
 
 
+// Endpoint para agragar usuario a tarea
+router.post("/addusuario_tarea", (req, res) => {
+  // const { id_usuario, id_tarea } = req.body;
+  const idUsuario = req.params.id_usuario;
+  const idTarea = req.params.id_tarea;
 
+  if (!idTarea || !idUsuario) {
+    return res.status(400).json({ error: "Faltan id_tarea o id_usuario" });
+  }
 
+  const query = "INSERT INTO usuarios_tareas (id_usuario, id_tarea) VALUES (?, ?) ON DUPLICATE KEY UPDATE id_usuario = id_usuario";
+  dbContainer.db.execute(query, [idUsuario, idTarea], (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.status(201).json({ message: "Miembro añadido a la tarea", results });
+  });
+});
 
-
-// router.patch("/task/:id/priority", (req, res) => {
-//   const id_tarea = req.params.id;
-
-//   const { prioridad } = req.body;
-
-//   if (prioridad === undefined) {
-//     return res.status(400).json({ error: "Prioridad es requerida" });
-//   }
-
-//   if (prioridad < 0 || prioridad > 5) {
-//     return res.status(400).json({ error: "Prioridad debe estar entre 0 y 5" });
-//   }
-
-//   const query = `UPDATE tareas SET prioridad = ? WHERE id_tarea = ?`;
-
-//   dbContainer.db.execute(query, [prioridad, id_tarea], (err, results) => {
-//     if (err) {
-//       return res.status(400).json({ error: err.message });
-//     }
-
-//     if (results.affectedRows === 0) {
-//       return res.status(404).json({ error: "Tarea no encontrada" });
-//     }
-
-//     res.status(200).json({ id_tarea, prioridad });
-//   });
-// });
 
 module.exports = router;
